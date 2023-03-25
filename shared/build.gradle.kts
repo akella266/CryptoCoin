@@ -1,5 +1,3 @@
-
-
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
@@ -25,7 +23,7 @@ android {
         warningsAsErrors = true
         abortOnError = true
     }
-    namespace = "co.touchlab.kampkit"
+    namespace = "ru.akella.cryptocoin"
 }
 
 version = "1.2"
@@ -107,7 +105,7 @@ kotlin {
 }
 
 sqldelight {
-    database("KaMPKitDb") {
-        packageName = "co.touchlab.kampkit.db"
+    database("CryptoCoin") {
+        packageName = "ru.akella.cryptocoin.db"
     }
 }

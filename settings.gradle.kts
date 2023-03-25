@@ -8,6 +8,6 @@ pluginManagement {
 }
 
 include(":app", ":shared")
-rootProject.name = "KaMPKit"
+rootProject.name = "CryptoCoin"
 
 enableFeaturePreview("VERSION_CATALOGS")

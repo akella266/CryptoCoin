@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "co.touchlab.kampkit.android"
+    namespace = "ru.akella.cryptocoin.android"
     compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-        applicationId = "co.touchlab.kampkit"
+        applicationId = "ru.akella.cryptocoin"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
