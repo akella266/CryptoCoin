@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android
+package ru.akella.cryptocoin.android.ui
 
 import android.app.Application
 import android.content.Context
@@ -6,10 +6,11 @@ import android.content.SharedPreferences
 import android.util.Log
 import ru.akella.cryptocoin.AppInfo
 import ru.akella.cryptocoin.initKoin
-import ru.akella.cryptocoin.models.BreedViewModel
+import ru.akella.cryptocoin.models.MainViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.dsl.module
+import ru.akella.cryptocoin.android.BuildConfig
 
 class MainApp : Application() {
 
@@ -18,7 +19,7 @@ class MainApp : Application() {
         initKoin(
             module {
                 single<Context> { this@MainApp }
-                viewModel { BreedViewModel(get(), get { parametersOf("BreedViewModel") }) }
+                viewModel { MainViewModel(get(), get { parametersOf("BreedViewModel") }) }
                 single<SharedPreferences> {
                     get<Context>().getSharedPreferences("KAMPSTARTER_SETTINGS", MODE_PRIVATE)
                 }

@@ -6,7 +6,7 @@ import ru.akella.cryptocoin.db.Breed
 import ru.akella.cryptocoin.mock.ClockMock
 import ru.akella.cryptocoin.mock.DogApiMock
 import ru.akella.cryptocoin.models.BreedRepository
-import ru.akella.cryptocoin.models.BreedViewModel
+import ru.akella.cryptocoin.models.MainViewModel
 import ru.akella.cryptocoin.models.BreedViewState
 import ru.akella.cryptocoin.response.BreedResult
 import co.touchlab.kermit.Logger
@@ -38,7 +38,7 @@ class BreedViewModelTest {
     private val clock = ClockMock(Clock.System.now())
 
     private val repository: BreedRepository = BreedRepository(dbHelper, settings, ktorApi, kermit, clock)
-    private val viewModel by lazy { BreedViewModel(repository, kermit) }
+    private val viewModel by lazy { MainViewModel(repository, kermit) }
 
     companion object {
         private val appenzeller = Breed(1, "appenzeller", false)

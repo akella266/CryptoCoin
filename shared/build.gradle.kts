@@ -52,6 +52,7 @@ kotlin {
                 implementation(libs.touchlab.stately)
                 implementation(libs.multiplatformSettings.common)
                 implementation(libs.kotlinx.dateTime)
+                implementation(libs.bundles.mvikotlin)
                 api(libs.touchlab.kermit)
             }
         }

@@ -53,5 +53,7 @@ dependencies {
     implementation(libs.kotlinx.dateTime)
     coreLibraryDesugaring(libs.android.desugaring)
     implementation(libs.koin.android)
+    implementation(libs.bundles.mvikotlin)
+    implementation(libs.bundles.voyager)
     testImplementation(libs.junit)
 }

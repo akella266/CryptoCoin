@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class BreedViewModel(
+class MainViewModel(
     private val breedRepository: BreedRepository,
     log: Logger
 ) : ViewModel() {

@@ -3,4 +3,9 @@
     <string name="favorite_breed">Favorite %1$s</string>
     <string name="unfavorite_breed">Unfavorite %1$s</string>
     <string name="empty_breeds">Sorry, no doggos found</string>
+
+    <string name="main_bottom_tab_latest">Latest</string>
+    <string name="main_bottom_tab_categories">Categories</string>
+    <string name="main_bottom_tab_exchanges">Exchanges</string>
+    <string name="main_bottom_tab_about">About</string>
 </resources>
