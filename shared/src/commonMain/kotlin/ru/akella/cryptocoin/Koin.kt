@@ -6,8 +6,16 @@ import ru.akella.cryptocoin.models.BreedRepository
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
+import kotlinx.serialization.json.Json
 import org.koin.core.KoinApplication
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -16,6 +24,7 @@ import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
+import ru.akella.cryptocoin.ktor.CoinMarketCapApi
 
 fun initKoin(appModule: Module): KoinApplication {
     val koinApplication = startKoin {
@@ -41,6 +50,9 @@ fun initKoin(appModule: Module): KoinApplication {
 }
 
 private val coreModule = module {
+    single { createJson() }
+    single { createHttpClient(get(), get(), get()) }
+
     single {
         DatabaseHelper(
             get(),
@@ -48,15 +60,8 @@ private val coreModule = module {
             Dispatchers.Default
         )
     }
-    single<DogApi> {
-        DogApiImpl(
-            getWith("DogApiImpl"),
-            get()
-        )
-    }
-    single<Clock> {
-        Clock.System
-    }
+    single { CoinMarketCapApi(getWith("CoinMarketCapApi"), get()) }
+    single<Clock> { Clock.System }
 
     // platformLogWriter() is a relatively simple config option, useful for local debugging. For production
     // uses you *may* want to have a more robust configuration from the native platform. In KaMP Kit,
@@ -73,6 +78,39 @@ private val coreModule = module {
             getWith("BreedRepository"),
             get()
         )
+    }
+}
+
+fun createJson() = Json {
+    isLenient = true
+    ignoreUnknownKeys = true
+}
+
+fun createHttpClient(
+    httpClientEngine: HttpClientEngine,
+    json: Json,
+    log: Logger
+) = HttpClient(httpClientEngine) {
+
+    expectSuccess = true
+    install(ContentNegotiation) {
+        json(json)
+    }
+
+    install(Logging) {
+        logger = object : io.ktor.client.plugins.logging.Logger {
+            override fun log(message: String) {
+                log.v { message }
+            }
+        }
+
+        level = LogLevel.INFO
+    }
+    install(HttpTimeout) {
+        val timeout = 30000L
+        connectTimeoutMillis = timeout
+        requestTimeoutMillis = timeout
+        socketTimeoutMillis = timeout
     }
 }
 
