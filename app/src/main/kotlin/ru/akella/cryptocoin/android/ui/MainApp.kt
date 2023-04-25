@@ -4,13 +4,12 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import ru.akella.cryptocoin.AppInfo
-import ru.akella.cryptocoin.initKoin
-import ru.akella.cryptocoin.models.MainViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.parameter.parametersOf
+import cafe.adriel.voyager.core.registry.screenModule
 import org.koin.dsl.module
+import ru.akella.cryptocoin.AppInfo
 import ru.akella.cryptocoin.android.BuildConfig
+import ru.akella.cryptocoin.android.ui.latest.latestModule
+import ru.akella.cryptocoin.initKoin
 
 class MainApp : Application() {
 
@@ -19,14 +18,15 @@ class MainApp : Application() {
         initKoin(
             module {
                 single<Context> { this@MainApp }
-                viewModel { MainViewModel(get(), get { parametersOf("BreedViewModel") }) }
                 single<SharedPreferences> {
-                    get<Context>().getSharedPreferences("KAMPSTARTER_SETTINGS", MODE_PRIVATE)
+                    get<Context>().getSharedPreferences("CRYPTOCOIN_SETTINGS", MODE_PRIVATE)
                 }
                 single<AppInfo> { AndroidAppInfo }
                 single {
                     { Log.i("Startup", "Hello from Android/Kotlin!") }
                 }
+            }.apply {
+                includes(latestModule)
             }
         )
     }
