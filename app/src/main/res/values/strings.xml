@@ -8,4 +8,8 @@
     <string name="main_bottom_tab_categories">Categories</string>
     <string name="main_bottom_tab_exchanges">Exchanges</string>
     <string name="main_bottom_tab_about">About</string>
+
+    <string name="latest_listing_changed_percent">%s %</string>
+
+    <string name="empty_data">No data</string>
 </resources>
