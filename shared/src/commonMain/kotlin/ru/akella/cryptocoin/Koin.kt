@@ -1,15 +1,16 @@
 package ru.akella.cryptocoin
 
-import ru.akella.cryptocoin.models.BreedRepository
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.plugins.HttpSendInterceptor
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.HttpSendPipeline
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
@@ -22,7 +23,9 @@ import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
-import ru.akella.cryptocoin.ktor.CoinMarketCapApi
+import ru.akella.cryptocoin.data.api.CoinMarketCapApi
+import ru.akella.cryptocoin.data.repositories.CryptoCurrencyRepository
+import ru.akella.cryptocoin.data.repositories.ICryptoCurrencyRepository
 
 fun initKoin(appModule: Module): KoinApplication {
     val koinApplication = startKoin {
@@ -68,14 +71,8 @@ private val coreModule = module {
     val baseLogger = Logger(config = StaticConfig(logWriterList = listOf(platformLogWriter())), "KampKit")
     factory { (tag: String?) -> if (tag != null) baseLogger.withTag(tag) else baseLogger }
 
-    single {
-        BreedRepository(
-            get(),
-            get(),
-            get(),
-            getWith("BreedRepository"),
-            get()
-        )
+    factory<ICryptoCurrencyRepository> {
+        CryptoCurrencyRepository(get(), get(), get(), get(), get())
     }
 }
 
@@ -90,7 +87,6 @@ fun createHttpClient(
     log: Logger
 ) = HttpClient(httpClientEngine) {
 
-    expectSuccess = true
     install(ContentNegotiation) {
         json(json)
     }
@@ -109,6 +105,12 @@ fun createHttpClient(
         connectTimeoutMillis = timeout
         requestTimeoutMillis = timeout
         socketTimeoutMillis = timeout
+    }
+}.apply {
+    sendPipeline.intercept(HttpSendPipeline.State) {
+        context.headers.append("Accept", "application/json")
+        context.headers.append("Accept-Encoding", "deflate, gzip")
+        context.headers.append("X-CMC_PRO_API_KEY", "d0f5d425-be11-49c9-8dac-83f57df88cc2")
     }
 }
 

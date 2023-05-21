@@ -1,7 +1,7 @@
 package ru.akella.cryptocoin.mock
 
-import ru.akella.cryptocoin.ktor.DogApi
-import ru.akella.cryptocoin.response.BreedResult
+import ru.akella.cryptocoin.data.api.DogApi
+import ru.akella.cryptocoin.data.response.BreedResult
 
 // TODO convert this to use Ktor's MockEngine
 class DogApiMock : DogApi {

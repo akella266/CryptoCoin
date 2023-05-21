@@ -1,7 +1,7 @@
 package ru.akella.cryptocoin
 
-import ru.akella.cryptocoin.ktor.DogApiImpl
-import ru.akella.cryptocoin.response.BreedResult
+import ru.akella.cryptocoin.api.DogApiImpl
+import ru.akella.cryptocoin.data.response.BreedResult
 import co.touchlab.kermit.LogWriter
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.LoggerConfig

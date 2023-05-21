@@ -4,7 +4,6 @@ import app.cash.turbine.test
 import ru.akella.cryptocoin.db.Breed
 import ru.akella.cryptocoin.mock.ClockMock
 import ru.akella.cryptocoin.mock.DogApiMock
-import ru.akella.cryptocoin.models.BreedRepository
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import com.russhwolf.settings.MapSettings

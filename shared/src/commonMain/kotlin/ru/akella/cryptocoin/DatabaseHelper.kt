@@ -2,7 +2,7 @@ package ru.akella.cryptocoin
 
 import ru.akella.cryptocoin.db.Breed
 import ru.akella.cryptocoin.db.CryptoCoin
-import ru.akella.cryptocoin.sqldelight.transactionWithContext
+import ru.akella.cryptocoin.data.db.transactionWithContext
 import co.touchlab.kermit.Logger
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.runtime.coroutines.asFlow

@@ -2,6 +2,7 @@ package ru.akella.cryptocoin.android.ui.latest
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -22,9 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.node.modifierElementOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -63,6 +67,9 @@ object LatestScreen : Tab {
                 .padding(top = 8.dp),
         ) {
             SearchField()
+            LazyColumn() {
+                items()
+            }
         }
     }
 
@@ -94,58 +101,143 @@ object LatestScreen : Tab {
     }
 
     @Composable
-    private fun CoinItem(modifier: Modifier = Modifier) {
+    fun CoinsHeader(modifier: Modifier = Modifier) {
         Row(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                "1",
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .weight(0.05f, true),
+                text = "1",
                 fontSize = 12.sp,
                 color = Color.Black
             )
             Image(
+                modifier = Modifier.weight(0.1f, true),
                 painter = painterResource(id = R.drawable.ic_search),
                 contentDescription = null,
             )
             Text(
-                "Bitcoin",
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .weight(0.4f, true),
+                text = "Bitcoin",
                 fontSize = 12.sp,
                 color = Color.Black,
             )
             Text(
-                "21000.56",
+                modifier = Modifier.weight(0.3f, true),
+                text = "21000.56",
                 fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
                 color = Color.Black,
             )
-            PriceChange()
+            PriceChange(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+            )
         }
     }
 
     @Composable
-    private fun PriceChange(modifier: Modifier = Modifier) {
-        val rotation = 90f
-        val color = Green
+    fun HeaderItem(modifier: Modifier = Modifier) {
+        val rotation = -90f
+        val colorFilter = null
+        Row(
+            modifier = modifier,
+        ) {
+            Text(
+                modifier = Modifier,
+                text = "Market cap",
+                fontSize = 10.sp
+            )
+            Image(
+                modifier = Modifier
+                    .rotate(rotation),
+                painter = painterResource(id = R.drawable.ic_arrow_16),
+                contentDescription = null,
+                colorFilter = colorFilter,
+            )
+        }
+    }
+
+    @Composable
+    fun CoinItem(modifier: Modifier = Modifier) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .weight(0.1f, true),
+                text = "1",
+                fontSize = 12.sp,
+                color = Color.Black
+            )
+            Image(
+                modifier = Modifier.weight(0.1f, true),
+                painter = painterResource(id = R.drawable.ic_search),
+                contentDescription = null,
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .weight(0.4f, true),
+                text = "Bitcoin",
+                fontSize = 12.sp,
+                color = Color.Black,
+            )
+            Text(
+                modifier = Modifier.weight(0.3f, true),
+                text = "21000.56",
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black,
+            )
+            PriceChange(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+            )
+        }
+    }
+
+    @Composable
+    private fun PriceChange(
+        modifier: Modifier = Modifier
+    ) {
+        val rotation = -90f
+        val color = Color.Green
         val backgroundColor = Green70
         Row(
             modifier = modifier
                 .background(
                     color = backgroundColor,
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(8.dp)
                 )
-                .padding(horizontal = 2.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 4.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround,
         ) {
             Image(
-                modifier = Modifier.rotate(rotation),
-                painter = painterResource(id = R.drawable.ic_arrow_24),
+                modifier = Modifier
+                    .size(16.dp)
+                    .rotate(rotation),
+                painter = painterResource(id = R.drawable.ic_arrow_16),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(color = color),
             )
             Text(
-                text = "1.23 %",
+                text = "10.23 %",
                 color = color,
-                fontSize = 8.sp
+                fontSize = 12.sp,
+                maxLines = 1,
             )
         }
     }
@@ -156,5 +248,21 @@ object LatestScreen : Tab {
 fun LatestScreenPreview() {
     AppTheme {
         LatestScreen.ScreenContent()
+    }
+}
+
+@Preview(backgroundColor = 0xfff)
+@Composable
+fun CoinItemPreview() {
+    AppTheme {
+        LatestScreen.CoinItem()
+    }
+}
+
+@Preview
+@Composable
+fun HeaderPreview() {
+    AppTheme {
+        LatestScreen.HeaderItem(Modifier)
     }
 }

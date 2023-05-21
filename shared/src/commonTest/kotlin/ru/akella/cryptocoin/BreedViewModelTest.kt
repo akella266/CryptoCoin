@@ -5,10 +5,9 @@ import app.cash.turbine.test
 import ru.akella.cryptocoin.db.Breed
 import ru.akella.cryptocoin.mock.ClockMock
 import ru.akella.cryptocoin.mock.DogApiMock
-import ru.akella.cryptocoin.models.BreedRepository
-import ru.akella.cryptocoin.models.MainViewModel
-import ru.akella.cryptocoin.models.BreedViewState
-import ru.akella.cryptocoin.response.BreedResult
+import ru.akella.cryptocoin.repositories.MainViewModel
+import ru.akella.cryptocoin.repositories.BreedViewState
+import ru.akella.cryptocoin.data.response.BreedResult
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import com.russhwolf.settings.MapSettings

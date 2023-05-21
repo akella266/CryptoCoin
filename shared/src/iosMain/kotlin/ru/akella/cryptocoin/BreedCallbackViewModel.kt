@@ -1,9 +1,8 @@
 package ru.akella.cryptocoin
 
 import ru.akella.cryptocoin.db.Breed
-import ru.akella.cryptocoin.models.BreedRepository
-import ru.akella.cryptocoin.models.MainViewModel
-import ru.akella.cryptocoin.models.CallbackViewModel
+import ru.akella.cryptocoin.repositories.MainViewModel
+import ru.akella.cryptocoin.repositories.CallbackViewModel
 import co.touchlab.kermit.Logger
 
 @Suppress("Unused") // Members are called from Swift
