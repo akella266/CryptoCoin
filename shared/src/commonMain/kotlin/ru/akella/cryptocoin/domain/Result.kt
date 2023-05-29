@@ -3,7 +3,7 @@ package ru.akella.cryptocoin.domain
 sealed class Result<V> {
 
     data class Loading<V>(val data: V? = null) : Result<V>()
-    data class Success<V>(val data: V? = null) : Result<V>()
+    data class Success<V>(val data: V) : Result<V>()
     data class Error<V>(val e: Throwable) : Result<V>()
 }
 

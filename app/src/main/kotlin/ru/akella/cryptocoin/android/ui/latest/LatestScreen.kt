@@ -21,6 +21,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -63,18 +64,22 @@ object LatestScreen : Tab {
         val screenModel = getScreenModel<LatestScreenModel>()
         val state = screenModel.states.collectAsState(initial = LatestState())
         ScreenContent(
-            state,
+            state.value,
             refresh = {},
         )
+
+        LaunchedEffect(key1 = screenModel) {
+            screenModel.loadListings()
+        }
     }
 
     @Composable
     fun ScreenContent(
-        state: State<LatestState>,
+        state: LatestState,
         refresh: () -> Unit,
     ) {
         val pullRefreshState = rememberPullRefreshState(
-            refreshing = state.value.isLoading,
+            refreshing = state.isLoading,
             onRefresh = refresh
         )
 
@@ -86,7 +91,7 @@ object LatestScreen : Tab {
                 .padding(top = 8.dp),
         ) {
             SearchField()
-            val coins = state.value.data
+            val coins = state.data
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 item { CoinsHeader() }
                 if (coins == null) {
@@ -267,15 +272,50 @@ object LatestScreen : Tab {
     }
 
     @Composable
-    fun HeaderItem(modifier: Modifier = Modifier) {
+    fun Header(
+        modifier: Modifier = Modifier
+    ) {
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            HeaderItem(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .weight(0.1f, true),
+                "Market Cap"
+            )
+            HeaderItem(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .weight(0.4f, true),
+                "Price, USD"
+            )
+            HeaderItem(
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .weight(0.3f, true),
+                "24h %"
+            )
+        }
+    }
+
+    @Composable
+    fun HeaderItem(
+        modifier: Modifier = Modifier,
+        title: String,
+    ) {
         val rotation = -90f
         val colorFilter = null
         Row(
             modifier = modifier,
+            horizontalArrangement = Arrangement.End,
         ) {
             Text(
                 modifier = Modifier,
-                text = "Market cap",
+                text = title,
                 fontSize = 10.sp
             )
             Image(
@@ -293,7 +333,9 @@ object LatestScreen : Tab {
 @Composable
 fun LatestScreenPreview() {
     AppTheme {
-        LatestScreen.ScreenContent()
+        LatestScreen.ScreenContent(
+            state = LatestState(),
+        ) { }
     }
 }
 
@@ -301,7 +343,18 @@ fun LatestScreenPreview() {
 @Composable
 fun CoinItemPreview() {
     AppTheme {
-        LatestScreen.CoinItem()
+        LatestScreen.CoinItem(
+            number = 1,
+            coin = Coin(
+                "id",
+                "categoryId",
+                "",
+                "name",
+                100.0,
+                2.0,
+                10000.0,
+                "description")
+        )
     }
 }
 
@@ -309,6 +362,6 @@ fun CoinItemPreview() {
 @Composable
 fun HeaderPreview() {
     AppTheme {
-        LatestScreen.HeaderItem(Modifier)
+        LatestScreen.Header(Modifier)
     }
 }

@@ -9,6 +9,7 @@ import org.koin.dsl.module
 import ru.akella.cryptocoin.AppInfo
 import ru.akella.cryptocoin.android.BuildConfig
 import ru.akella.cryptocoin.android.ui.latest.latestModule
+import ru.akella.cryptocoin.android.util.ErrorMapper
 import ru.akella.cryptocoin.initKoin
 
 class MainApp : Application() {
@@ -25,6 +26,7 @@ class MainApp : Application() {
                 single {
                     { Log.i("Startup", "Hello from Android/Kotlin!") }
                 }
+                single { ErrorMapper() }
             }.apply {
                 includes(latestModule)
             }

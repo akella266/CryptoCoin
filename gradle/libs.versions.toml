@@ -86,6 +86,7 @@ sqlDelight-coroutinesExt = { module = "com.squareup.sqldelight:coroutines-extens
 sqlDelight-native = { module = "com.squareup.sqldelight:native-driver", version.ref = "sqlDelight" }
 sqlDelight-runtime = { module = "com.squareup.sqldelight:runtime", version.ref = "sqlDelight" }
 
+touchlab-stately = { module = "co.touchlab:stately-common", version.ref = "stately" }
 touchlab-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

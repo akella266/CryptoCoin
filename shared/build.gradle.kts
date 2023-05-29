@@ -53,6 +53,7 @@ kotlin {
                 implementation(libs.kotlinx.dateTime)
                 implementation(libs.bundles.mvikotlin)
                 api(libs.touchlab.kermit)
+                api(libs.touchlab.stately)
             }
         }
         val commonTest by getting {

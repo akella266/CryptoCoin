@@ -8,7 +8,7 @@ import ru.akella.cryptocoin.android.ui.latest.mvi.LatestStoreFactory
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestStoreFactoryImpl
 
 val latestModule = module {
-    factory { LatestScreenModel(get()) }
+    factory { LatestScreenModel(get(), get(), get(), get(), get()) }
     factory<LatestStoreFactory> { LatestStoreFactoryImpl(DefaultStoreFactory(), get()) }
     factory { LatestReducer() }
 }

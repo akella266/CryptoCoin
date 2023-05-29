@@ -8,7 +8,6 @@ import com.arkivanov.mvikotlin.extensions.coroutines.states
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.core.component.getScopeName
@@ -18,14 +17,18 @@ import ru.akella.cryptocoin.android.ui.latest.mvi.LatestSideEffect
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestState
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestStoreFactory
 import ru.akella.cryptocoin.android.ui.latest.mvi.getValue
+import ru.akella.cryptocoin.android.util.ErrorMapper
+import ru.akella.cryptocoin.domain.Result.Error
+import ru.akella.cryptocoin.domain.Result.Loading
+import ru.akella.cryptocoin.domain.Result.Success
 import ru.akella.cryptocoin.domain.interactors.GetLatestListsInteractor
-import kotlin.coroutines.CoroutineContext
 
 class LatestScreenModel(
     storeFactory: LatestStoreFactory,
+    dispatchersProvider: DispatchersProvider,
     private val log: Logger,
-    private val dispatchersProvider: DispatchersProvider,
-    private val getLatestListingsInteractor: GetLatestListsInteractor
+    private val getLatestListingsInteractor: GetLatestListsInteractor,
+    private val errorMapper: ErrorMapper,
 ) : ScreenModel {
 
     private val coroutineExceptionHandler = CoroutineExceptionHandler { context, throwable ->
@@ -38,7 +41,7 @@ class LatestScreenModel(
 
     private val store: Store<LatestIntent, LatestState, LatestSideEffect> by storeFactory.create(
         TAG,
-        LatestState("")
+        LatestState()
     )
 
     val states = store.states
@@ -47,7 +50,15 @@ class LatestScreenModel(
 
     fun loadListings() {
         getLatestListingsInteractor()
-            .onEach {  }
+            .onEach { state ->
+                val intent =
+                    when (state) {
+                        is Loading -> LatestIntent.ShowLoadingState(state.data)
+                        is Success -> LatestIntent.ShowLoadedState(state.data)
+                        is Error -> LatestIntent.ShowErrorState(errorMapper.mapError(state.e))
+                    }
+                store.accept(intent)
+            }
             .launchIn(modelScope)
     }
 

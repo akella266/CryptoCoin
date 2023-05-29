@@ -11,7 +11,6 @@ import ru.akella.cryptocoin.data.response.coininfo.CoinInfoResponse
 import ru.akella.cryptocoin.data.response.exchange.ExchangeResponse
 import ru.akella.cryptocoin.data.response.exchangedetails.ExchangeDetailsResponse
 import ru.akella.cryptocoin.data.response.latestlisting.LatestListingsResponse
-import co.touchlab.kermit.Logger as KermitLogger
 
 class CoinMarketCapApi(
     private val client: HttpClient,
