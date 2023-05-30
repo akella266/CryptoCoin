@@ -1,6 +1,6 @@
 package ru.akella.cryptocoin
 
-import ru.akella.cryptocoin.db.KaMPKitDb
+import ru.akella.cryptocoin.db.CryptoCoin
 import co.touchlab.kermit.Logger
 import com.russhwolf.settings.NSUserDefaultsSettings
 import com.russhwolf.settings.Settings
@@ -23,11 +23,12 @@ fun initKoinIos(
         single<Settings> { NSUserDefaultsSettings(userDefaults) }
         single { appInfo }
         single { doOnStartup }
+        single { DispatchersProvider() }
     }
 )
 
 actual val platformModule = module {
-    single<SqlDriver> { NativeSqliteDriver(KaMPKitDb.Schema, "KampkitDb") }
+    single<SqlDriver> { NativeSqliteDriver(CryptoCoin.Schema, "CryptoCoinDb") }
 
     single { Darwin.create() }
 

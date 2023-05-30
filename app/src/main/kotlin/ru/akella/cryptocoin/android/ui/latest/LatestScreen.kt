@@ -39,6 +39,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import coil.compose.AsyncImage
+import org.koin.core.parameter.parametersOf
 import ru.akella.cryptocoin.android.R
 import ru.akella.cryptocoin.android.ui.common.EmptyText
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestState

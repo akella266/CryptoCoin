@@ -14,7 +14,7 @@ import ru.akella.cryptocoin.data.response.latestlisting.LatestListingsResponse
 
 class CoinMarketCapApi(
     private val client: HttpClient,
-    private val baseUrl: String = BASE_URL
+    private val baseUrl: String
 ): KoinComponent {
 
     init {

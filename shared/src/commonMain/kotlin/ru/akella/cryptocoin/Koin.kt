@@ -5,7 +5,6 @@ import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.plugins.HttpSendInterceptor
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -21,18 +20,23 @@ import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
+import org.koin.core.qualifier.Qualifier
+import org.koin.core.qualifier.StringQualifier
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
+import ru.akella.cryptocoin.data.api.BASE_URL
 import ru.akella.cryptocoin.data.api.CoinMarketCapApi
 import ru.akella.cryptocoin.data.repositories.CryptoCurrencyRepository
 import ru.akella.cryptocoin.data.repositories.ICryptoCurrencyRepository
+import ru.akella.cryptocoin.domain.domainModule
 
 fun initKoin(appModule: Module): KoinApplication {
     val koinApplication = startKoin {
         modules(
             appModule,
             platformModule,
-            coreModule
+            coreModule,
+            domainModule
         )
     }
 
@@ -51,8 +55,9 @@ fun initKoin(appModule: Module): KoinApplication {
 }
 
 private val coreModule = module {
+    single<String>(qualifier = StringQualifier("BaseUrl")) { BASE_URL }
     single { createJson() }
-    single { createHttpClient(get(), get(), get()) }
+    single { createHttpClient(get(), get(), getWith<Logger>("HttpClient")) }
 
     single {
         DatabaseHelper(
@@ -61,18 +66,18 @@ private val coreModule = module {
             Dispatchers.Default
         )
     }
-    single { CoinMarketCapApi(getWith("CoinMarketCapApi"), get()) }
+    single { CoinMarketCapApi(get(), get(qualifier = StringQualifier("BaseUrl"))) }
     single<Clock> { Clock.System }
 
     // platformLogWriter() is a relatively simple config option, useful for local debugging. For production
     // uses you *may* want to have a more robust configuration from the native platform. In KaMP Kit,
     // that would likely go into platformModule expect/actual.
     // See https://github.com/touchlab/Kermit
-    val baseLogger = Logger(config = StaticConfig(logWriterList = listOf(platformLogWriter())), "KampKit")
+    val baseLogger = Logger(config = StaticConfig(logWriterList = listOf(platformLogWriter())), "CryptoCoin")
     factory { (tag: String?) -> if (tag != null) baseLogger.withTag(tag) else baseLogger }
 
     factory<ICryptoCurrencyRepository> {
-        CryptoCurrencyRepository(get(), get(), get(), get(), get())
+        CryptoCurrencyRepository(get(), get(), get(), getWith<Logger>("CryptoCurrencyRepository"), get())
     }
 }
 
@@ -98,8 +103,9 @@ fun createHttpClient(
             }
         }
 
-        level = LogLevel.INFO
+        level = LogLevel.ALL
     }
+
     install(HttpTimeout) {
         val timeout = 30000L
         connectTimeoutMillis = timeout
@@ -109,12 +115,12 @@ fun createHttpClient(
 }.apply {
     sendPipeline.intercept(HttpSendPipeline.State) {
         context.headers.append("Accept", "application/json")
-        context.headers.append("Accept-Encoding", "deflate, gzip")
+        context.headers.append("Accept-Encoding", "gzip, deflate, br")
         context.headers.append("X-CMC_PRO_API_KEY", "d0f5d425-be11-49c9-8dac-83f57df88cc2")
     }
 }
 
-internal inline fun <reified T> Scope.getWith(vararg params: Any?): T {
+inline fun <reified T> Scope.getWith(vararg params: Any?): T {
     return get(parameters = { parametersOf(*params) })
 }
 

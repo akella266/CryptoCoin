@@ -21,11 +21,9 @@ class CryptoCurrencyRepository(
     private val dbHelper: DatabaseHelper,
     private val api: CoinMarketCapApi,
     private val settings: Settings,
-    log: Logger,
+    private val log: Logger,
     private val clock: Clock
 ) : ICryptoCurrencyRepository {
-
-    private val log by lazy { log.withTag("CryptoCurrencyRepository") }
 
     companion object {
         internal const val DB_TIMESTAMP_KEY = "DbTimestampKey"
@@ -36,7 +34,7 @@ class CryptoCurrencyRepository(
     }
 
     override fun getLatestCoins(): Flow<List<Coin>> = flow {
-        val latestListingsResponse = api.fetchLatestListings(0, 50)
+        val latestListingsResponse = api.fetchLatestListings(1, 100)
         val coins = latestListingsResponse.toCoins()
         emit(coins)
     }

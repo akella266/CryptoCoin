@@ -25,4 +25,5 @@ actual val platformModule: Module = module {
     single {
         OkHttp.create()
     }
+    single { DispatchersProvider() }
 }
