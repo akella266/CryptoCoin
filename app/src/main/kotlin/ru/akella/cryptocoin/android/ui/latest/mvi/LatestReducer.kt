@@ -5,7 +5,7 @@ import ru.akella.cryptocoin.android.ui.latest.mvi.LatestIntent.ShowErrorState
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestIntent.ShowLoadedState
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestIntent.ShowLoadingState
 
-class LatestReducer() : Reducer<LatestState, LatestIntent> {
+class LatestReducer : Reducer<LatestState, LatestIntent> {
 
     override fun LatestState.reduce(msg: LatestIntent): LatestState {
         return when (msg) {

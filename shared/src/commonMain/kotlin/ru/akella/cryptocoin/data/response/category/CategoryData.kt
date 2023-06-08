@@ -11,7 +11,7 @@ data class CategoryData (
     val title: String,
     val description: String,
     @SerialName("num_tokens")
-    val numTokens: Long,
+    val numTokens: Double,
     @SerialName("avg_price_change")
     val avgPriceChange: Double,
     @SerialName("market_cap")
@@ -23,25 +23,25 @@ data class CategoryData (
     val volumeChange: Double,
     val coins: List<Coin>,
     @SerialName("last_updated")
-    val lastUpdated: Long
+    val lastUpdated: Double
 )
 
 @Serializable
 data class Coin (
-    val id: Long,
+    val id: Double,
     val name: String,
     val symbol: String,
     val slug: String,
     @SerialName("cmc_rank")
-    val cmcRank: Long? = null,
+    val cmcRank: Double? = null,
     @SerialName("num_market_pairs")
-    val numMarketPairs: Long,
+    val numMarketPairs: Double,
     @SerialName("circulating_supply")
-    val circulatingSupply: Long,
+    val circulatingSupply: Double,
     @SerialName("total_supply")
-    val totalSupply: Long,
+    val totalSupply: Double,
     @SerialName("max_supply")
-    val maxSupply: Long,
+    val maxSupply: Double,
     @SerialName("last_updated")
     val lastUpdated: String,
     @SerialName("date_added")
@@ -55,7 +55,7 @@ data class Coin (
 data class Quote (
     val price: Double,
     @SerialName("volume_24h")
-    val volume24H: Long,
+    val volume24H: Double,
     @SerialName("percent_change_1h")
     val percentChange1H: Double,
     @SerialName("percent_change_24h")
@@ -63,7 +63,7 @@ data class Quote (
     @SerialName("percent_change_7d")
     val percentChange7D: Double,
     @SerialName("market_cap")
-    val marketCap: Long,
+    val marketCap: Double,
     @SerialName("last_updated")
     val lastUpdated: String
 )

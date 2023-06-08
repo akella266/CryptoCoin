@@ -8,6 +8,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.states
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.core.component.getScopeName
@@ -55,7 +56,10 @@ class LatestScreenModel(
                     when (state) {
                         is Loading -> LatestIntent.ShowLoadingState(state.data)
                         is Success -> LatestIntent.ShowLoadedState(state.data)
-                        is Error -> LatestIntent.ShowErrorState(errorMapper.mapError(state.e))
+                        is Error -> {
+                            log.e("latestListingsInteractor", state.e)
+                            LatestIntent.ShowErrorState(errorMapper.mapError(state.e))
+                        }
                     }
                 store.accept(intent)
             }

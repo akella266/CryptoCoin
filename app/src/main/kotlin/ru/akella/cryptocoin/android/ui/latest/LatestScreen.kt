@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -31,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -65,7 +67,9 @@ object LatestScreen : Tab {
         val screenModel = getScreenModel<LatestScreenModel>()
         val state = screenModel.states.collectAsState(initial = LatestState())
         ScreenContent(
-            state.value,
+            state.value.data,
+            state.value.isLoading,
+            state.value.errorMessage,
             refresh = {},
         )
 
@@ -76,11 +80,13 @@ object LatestScreen : Tab {
 
     @Composable
     fun ScreenContent(
-        state: LatestState,
+        coins: List<Coin>?,
+        isLoading: Boolean,
+        errorMessage: String?,
         refresh: () -> Unit,
     ) {
         val pullRefreshState = rememberPullRefreshState(
-            refreshing = state.isLoading,
+            refreshing = isLoading,
             onRefresh = refresh
         )
 
@@ -92,16 +98,15 @@ object LatestScreen : Tab {
                 .padding(top = 8.dp),
         ) {
             SearchField()
-            val coins = state.data
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 item { CoinsHeader() }
                 if (coins == null) {
                     item { EmptyText() }
                 } else {
-                    items(coins.size, { coins[it] }, { coins[it] }) {
+                    items(coins) {
                         CoinItem(
-                            number = it,
-                            coin = coins[it])
+                            number = coins.indexOf(it),
+                            coin = it)
                     }
                 }
             }
@@ -114,6 +119,7 @@ object LatestScreen : Tab {
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp),
+            label = { Text("Search for tokens...") },
             value = "Search for tokens...",
             singleLine = true,
             onValueChange = { },
@@ -127,6 +133,7 @@ object LatestScreen : Tab {
             },
             shape = RoundedCornerShape(24.dp),
             colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.Black,
                 focusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -333,11 +340,11 @@ object LatestScreen : Tab {
 @Preview
 @Composable
 fun LatestScreenPreview() {
-    AppTheme {
-        LatestScreen.ScreenContent(
-            state = LatestState(),
-        ) { }
-    }
+    // AppTheme {
+    //     LatestScreen.ScreenContent(
+    //         state = LatestState(),
+    //     ) { }
+    // }
 }
 
 @Preview(backgroundColor = 0xfff)

@@ -3,6 +3,7 @@ package ru.akella.cryptocoin.data.response.latestlisting
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+// todo change double to bigdecimal
 @Serializable
 data class CurrencyDetails(
     @SerialName("fully_diluted_market_cap")
@@ -12,7 +13,7 @@ data class CurrencyDetails(
     @SerialName("market_cap")
     val marketCap: Double,
     @SerialName("market_cap_dominance")
-    val marketCapDominance: Int,
+    val marketCapDominance: Double,
     @SerialName("percent_change_1h")
     val percentChange1H: Double,
     @SerialName("percent_change_24h")
@@ -21,7 +22,7 @@ data class CurrencyDetails(
     val percentChange7D: Double,
     val price: Double,
     @SerialName("volume_24h")
-    val volume24h: Long,
+    val volume24h: Double,
     @SerialName("volume_change_24h")
     val volumeChange24H: Double
 )

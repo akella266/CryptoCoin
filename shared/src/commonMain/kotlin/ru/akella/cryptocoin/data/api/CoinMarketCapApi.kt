@@ -4,6 +4,7 @@ import co.touchlab.stately.ensureNeverFrozen
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.util.reflect.TypeInfo
 import org.koin.core.component.KoinComponent
 import ru.akella.cryptocoin.data.response.categories.CategoriesResponse
 import ru.akella.cryptocoin.data.response.category.CategoryResponse

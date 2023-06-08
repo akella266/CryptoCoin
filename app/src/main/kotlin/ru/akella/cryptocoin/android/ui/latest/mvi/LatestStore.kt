@@ -3,6 +3,7 @@ package ru.akella.cryptocoin.android.ui.latest.mvi
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import kotlin.reflect.KProperty
 
 interface LatestStore : Store<LatestIntent, LatestState, LatestSideEffect>
@@ -20,13 +21,19 @@ class LatestStoreFactoryImpl(
 ) : LatestStoreFactory {
 
     override fun create(name: String?, initialState: LatestState): LatestStore =
-        object : LatestStore,
-            Store<LatestIntent, LatestState, LatestSideEffect> by storeFactory.create(
+        object : LatestStore, Store<LatestIntent, LatestState, LatestSideEffect> by storeFactory.create(
                 name = name,
-                autoInit = false,
+                autoInit = true,
                 initialState = initialState,
                 bootstrapper = null,
-                executorFactory = { CoroutineExecutor() },
+                executorFactory = { LatestExecutor() },
                 reducer = reducer,
-            ) { }
+            ) {}
+}
+
+private class LatestExecutor() : CoroutineExecutor<LatestIntent, LatestIntent, LatestState, LatestIntent, LatestSideEffect>() {
+
+    override fun executeIntent(intent: LatestIntent, getState: () -> LatestState) {
+        dispatch(intent)
+    }
 }

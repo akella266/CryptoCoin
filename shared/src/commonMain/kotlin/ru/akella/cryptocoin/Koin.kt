@@ -5,6 +5,8 @@ import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.ProxyBuilder
+import io.ktor.client.engine.http
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
@@ -114,8 +116,6 @@ fun createHttpClient(
     }
 }.apply {
     sendPipeline.intercept(HttpSendPipeline.State) {
-        context.headers.append("Accept", "application/json")
-        context.headers.append("Accept-Encoding", "gzip, deflate, br")
         context.headers.append("X-CMC_PRO_API_KEY", "d0f5d425-be11-49c9-8dac-83f57df88cc2")
     }
 }
