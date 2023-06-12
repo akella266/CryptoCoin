@@ -27,7 +27,6 @@ class MainApp : Application() {
                 single {
                     { Log.i("Startup", "Hello from Android/Kotlin!") }
                 }
-                single { ErrorMapper() }
 
                 single<ImageLoader> {
                     val headers = get<AuthHeaders>()
