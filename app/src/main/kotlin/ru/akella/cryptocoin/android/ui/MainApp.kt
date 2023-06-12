@@ -5,11 +5,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import cafe.adriel.voyager.core.registry.screenModule
+import coil.ImageLoader
+import okhttp3.Headers
+import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import ru.akella.cryptocoin.AppInfo
 import ru.akella.cryptocoin.android.BuildConfig
 import ru.akella.cryptocoin.android.ui.latest.latestModule
 import ru.akella.cryptocoin.android.util.ErrorMapper
+import ru.akella.cryptocoin.domain.AuthHeaders
 import ru.akella.cryptocoin.initKoin
 
 class MainApp : Application() {
@@ -27,6 +31,22 @@ class MainApp : Application() {
                     { Log.i("Startup", "Hello from Android/Kotlin!") }
                 }
                 single { ErrorMapper() }
+
+                single<ImageLoader> {
+                    val headers = get<AuthHeaders>()
+                    ImageLoader.Builder(get<Context>())
+                        .okHttpClient {
+                            OkHttpClient.Builder()
+                                .addNetworkInterceptor { chain ->
+                                    val request = chain.request().newBuilder()
+                                        .header(headers.name, headers.value)
+                                        .build()
+                                    chain.proceed(request)
+                                }
+                                .build()
+                        }
+                        .build()
+                }
             }.apply {
                 includes(latestModule)
             }

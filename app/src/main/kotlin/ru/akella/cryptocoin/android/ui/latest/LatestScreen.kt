@@ -1,16 +1,19 @@
 package ru.akella.cryptocoin.android.ui.latest
 
+import android.icu.number.NumberFormatter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,20 +22,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,19 +43,26 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import coil.compose.AsyncImage
-import org.koin.core.parameter.parametersOf
+import co.touchlab.kermit.Logger
+import coil.ImageLoader
+import coil.compose.AsyncImagePainter
 import ru.akella.cryptocoin.android.R
+import ru.akella.cryptocoin.android.ui.base.AsyncImage
 import ru.akella.cryptocoin.android.ui.common.EmptyText
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestState
 import ru.akella.cryptocoin.android.ui.theme.AppTheme
 import ru.akella.cryptocoin.android.ui.theme.Green70
 import ru.akella.cryptocoin.android.ui.theme.Red70
+import ru.akella.cryptocoin.android.util.EMPTY
+import ru.akella.cryptocoin.android.util.formatCap
 import ru.akella.cryptocoin.domain.models.Coin
+import java.text.NumberFormat
+import java.util.Locale
+import kotlin.math.abs
 import kotlin.math.round
 
 @OptIn(ExperimentalMaterialApi::class)
-object LatestScreen : Tab {
+class LatestScreen(private val log: Logger) : Tab {
 
     override val options: TabOptions
         @Composable
@@ -87,28 +97,44 @@ object LatestScreen : Tab {
     ) {
         val pullRefreshState = rememberPullRefreshState(
             refreshing = isLoading,
-            onRefresh = refresh
+            onRefresh = refresh,
         )
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colors.background)
-                .pullRefresh(pullRefreshState)
                 .padding(top = 8.dp),
         ) {
             SearchField()
-            LazyColumn(modifier = Modifier.fillMaxWidth()) {
-                item { CoinsHeader() }
-                if (coins == null) {
-                    item { EmptyText() }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pullRefresh(pullRefreshState)
+            ) {
+                if (coins.isNullOrEmpty()) {
+                    EmptyText()
                 } else {
-                    items(coins) {
-                        CoinItem(
-                            number = coins.indexOf(it),
-                            coin = it)
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 12.dp)
+                    ) {
+                        item { Header(Modifier, {}, {}, {}) }
+                        items(coins) {
+                            CoinItem(
+                                number = coins.indexOf(it) + 1,
+                                coin = it
+                            )
+                        }
                     }
                 }
+
+                PullRefreshIndicator(
+                    isLoading,
+                    pullRefreshState,
+                    Modifier.align(Alignment.TopCenter)
+                )
             }
         }
     }
@@ -120,12 +146,12 @@ object LatestScreen : Tab {
                 .fillMaxWidth()
                 .padding(horizontal = 12.dp),
             label = { Text("Search for tokens...") },
-            value = "Search for tokens...",
+            value = String.EMPTY,
             singleLine = true,
             onValueChange = { },
             leadingIcon = {
                 Image(
-                    modifier = Modifier.size(32.dp),
+                    modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.ic_search_24),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(Color.Gray)
@@ -140,45 +166,6 @@ object LatestScreen : Tab {
                 backgroundColor = Color.LightGray,
             )
         )
-    }
-
-    @Composable
-    fun CoinsHeader(modifier: Modifier = Modifier) {
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .weight(0.05f, true),
-                text = "1",
-                fontSize = 12.sp,
-                color = Color.Black
-            )
-            Image(
-                modifier = Modifier.weight(0.1f, true),
-                painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = null,
-            )
-            Text(
-                modifier = Modifier
-                    .padding(start = 4.dp)
-                    .weight(0.4f, true),
-                text = "Bitcoin",
-                fontSize = 12.sp,
-                color = Color.Black,
-            )
-            Text(
-                modifier = Modifier.weight(0.3f, true),
-                text = "21000.56",
-                fontSize = 12.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-            )
-        }
     }
 
     @Composable
@@ -202,20 +189,32 @@ object LatestScreen : Tab {
                 color = Color.Black
             )
             AsyncImage(
-                modifier = Modifier.weight(0.1f, true),
+                modifier = Modifier
+                    .height(32.dp)
+                    .weight(0.1f, true),
                 model = coin.img,
-                contentDescription = null)
-            Text(
+                contentDescription = null,
+            )
+            Column(
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .weight(0.4f, true),
-                text = coin.name,
-                fontSize = 12.sp,
-                color = Color.Black,
-            )
+                    .weight(0.4f, true)
+            ) {
+                Text(
+                    text = coin.name,
+                    fontSize = 12.sp,
+                    color = Color.Black,
+                )
+                Text(
+                    modifier = Modifier.padding(top = 4.dp),
+                    text = formatCap(coin.cap),
+                    fontSize = 12.sp,
+                    color = Color.Black,
+                )
+            }
             Text(
                 modifier = Modifier.weight(0.3f, true),
-                text = String.format("$.2f", coin.currentCost),
+                text = String.format("%.2f", coin.currentCost),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
@@ -239,7 +238,8 @@ object LatestScreen : Tab {
         }
         val color = when {
             changePercent < 0f -> Color.Red
-            else -> Color.Green
+            changePercent > 0f -> Color.Green
+            else -> Color.Gray
         }
 
         val backgroundColor =
@@ -271,7 +271,7 @@ object LatestScreen : Tab {
                 Spacer(modifier = Modifier.size(16.dp))
             }
             Text(
-                text = "10.23 %",
+                text = String.format("%.2f", abs(changePercent)),
                 color = color,
                 fontSize = 12.sp,
                 maxLines = 1,
@@ -281,7 +281,10 @@ object LatestScreen : Tab {
 
     @Composable
     fun Header(
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
+        onCapSortClicked: () -> Unit,
+        onPriceSortClicked: () -> Unit,
+        onPerDayChangeSortClicked: () -> Unit,
     ) {
         Row(
             modifier = modifier
@@ -291,21 +294,24 @@ object LatestScreen : Tab {
         ) {
             HeaderItem(
                 modifier = Modifier
-                    .padding(start = 12.dp)
-                    .weight(0.1f, true),
-                "Market Cap"
+                    .padding(start = 4.dp)
+                    .weight(0.6f, true)
+                    .clickable(onClick = onCapSortClicked),
+                stringResource(id = R.string.latest_header_market_cap),
+            )
+            HeaderItem(
+                modifier = Modifier
+                    .padding(start = 2.dp)
+                    .weight(0.4f, true)
+                    .clickable(onClick = onPriceSortClicked),
+                stringResource(id = R.string.latest_header_cost)
             )
             HeaderItem(
                 modifier = Modifier
                     .padding(start = 12.dp)
-                    .weight(0.4f, true),
-                "Price, USD"
-            )
-            HeaderItem(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .weight(0.3f, true),
-                "24h %"
+                    .weight(0.3f, true)
+                    .clickable(onClick = onPerDayChangeSortClicked),
+                stringResource(id = R.string.latest_header_24h)
             )
         }
     }
@@ -313,26 +319,30 @@ object LatestScreen : Tab {
     @Composable
     fun HeaderItem(
         modifier: Modifier = Modifier,
-        title: String,
+        title: String = "",
+        hideSort: Boolean = false,
     ) {
         val rotation = -90f
-        val colorFilter = null
+        val colorFilter = ColorFilter.tint(Color.Gray)
         Row(
             modifier = modifier,
-            horizontalArrangement = Arrangement.End,
+            horizontalArrangement = Arrangement.Center,
         ) {
             Text(
                 modifier = Modifier,
                 text = title,
+                color = Color.Black,
                 fontSize = 10.sp
             )
-            Image(
-                modifier = Modifier
-                    .rotate(rotation),
-                painter = painterResource(id = R.drawable.ic_arrow_16),
-                contentDescription = null,
-                colorFilter = colorFilter,
-            )
+            if (!hideSort) {
+                Image(
+                    modifier = Modifier
+                        .rotate(rotation),
+                    painter = painterResource(id = R.drawable.ic_arrow_16),
+                    contentDescription = null,
+                    colorFilter = colorFilter,
+                )
+            }
         }
     }
 }
@@ -340,36 +350,11 @@ object LatestScreen : Tab {
 @Preview
 @Composable
 fun LatestScreenPreview() {
-    // AppTheme {
-    //     LatestScreen.ScreenContent(
-    //         state = LatestState(),
-    //     ) { }
-    // }
-}
-
-@Preview(backgroundColor = 0xfff)
-@Composable
-fun CoinItemPreview() {
     AppTheme {
-        LatestScreen.CoinItem(
-            number = 1,
-            coin = Coin(
-                "id",
-                "categoryId",
-                "",
-                "name",
-                100.0,
-                2.0,
-                10000.0,
-                "description")
-        )
-    }
-}
-
-@Preview
-@Composable
-fun HeaderPreview() {
-    AppTheme {
-        LatestScreen.Header(Modifier)
+        LatestScreen(Logger).ScreenContent(
+            coins = coins,
+            true,
+            "",
+        ) { }
     }
 }

@@ -11,8 +11,8 @@ internal fun LatestListingsResponse.toCoins(): List<Coin> = buildList {
             img = "https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png",
             name = coin.name,
             currentCost = coin.quote.getOrElse("USD") { coin.quote.values.firstOrNull() }?.price ?: 0.0,
-            lastChangePercent = 0.0,
-            cap = 0.0,
+            lastChangePercent = coin.quote.getOrElse("USD") { coin.quote.values.firstOrNull() }?.percentChange24H ?: 0.0,
+            cap = coin.quote.getOrElse("USD") { coin.quote.values.firstOrNull() }?.marketCap ?: 0.0,
             description = "",
         ))
     }

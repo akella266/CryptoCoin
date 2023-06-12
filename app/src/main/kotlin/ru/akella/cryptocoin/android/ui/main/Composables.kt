@@ -26,19 +26,19 @@ data class MainScreen(
 
     @Composable
     override fun Content() {
-        MainScreenContent()
+        MainScreenContent(log)
     }
 }
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun MainScreenContent() {
-    TabNavigator(LatestScreen) {
+fun MainScreenContent(log: Logger) {
+    TabNavigator(LatestScreen(log)) {
         Scaffold(
             content = { CurrentTab() },
             bottomBar = {
                 BottomNavigation {
-                    TabNavigationItem(LatestScreen)
+                    TabNavigationItem(LatestScreen(log))
                     TabNavigationItem(CategoriesScreen)
                     TabNavigationItem(ExchangesScreen)
                     TabNavigationItem(AboutScreen)
@@ -68,5 +68,5 @@ private fun RowScope.TabNavigationItem(tab: Tab) {
 @Preview
 @Composable
 fun MainScreenContentPreview_Success() {
-    MainScreenContent()
+    MainScreenContent(Logger)
 }

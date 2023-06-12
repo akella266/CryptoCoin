@@ -11,7 +11,7 @@ data class LatestListingData(
     val cmcRank: Double,
     @SerialName("date_added")
     val dateAdded: String,
-    val id: Double,
+    val id: Int,
     @SerialName("last_updated")
     val lastUpdated: String,
     @SerialName("max_supply")
