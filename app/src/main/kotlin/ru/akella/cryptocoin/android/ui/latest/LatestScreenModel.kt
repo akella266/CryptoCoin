@@ -66,6 +66,14 @@ class LatestScreenModel(
             .launchIn(modelScope)
     }
 
+    fun refresh() {
+        loadListings()
+    }
+
+    fun search(query: String) {
+
+    }
+
     override fun onDispose() {
         modelScope.coroutineContext.cancelChildren()
     }

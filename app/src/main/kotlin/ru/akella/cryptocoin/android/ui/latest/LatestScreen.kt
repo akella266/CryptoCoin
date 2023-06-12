@@ -1,6 +1,5 @@
 package ru.akella.cryptocoin.android.ui.latest
 
-import android.icu.number.NumberFormatter
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -44,8 +42,6 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import co.touchlab.kermit.Logger
-import coil.ImageLoader
-import coil.compose.AsyncImagePainter
 import ru.akella.cryptocoin.android.R
 import ru.akella.cryptocoin.android.ui.base.AsyncImage
 import ru.akella.cryptocoin.android.ui.common.EmptyText
@@ -56,8 +52,6 @@ import ru.akella.cryptocoin.android.ui.theme.Red70
 import ru.akella.cryptocoin.android.util.EMPTY
 import ru.akella.cryptocoin.android.util.formatCap
 import ru.akella.cryptocoin.domain.models.Coin
-import java.text.NumberFormat
-import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.round
 
@@ -80,7 +74,8 @@ class LatestScreen(private val log: Logger) : Tab {
             state.value.data,
             state.value.isLoading,
             state.value.errorMessage,
-            refresh = {},
+            refresh = screenModel::refresh,
+            onQueryChanged = screenModel::search
         )
 
         LaunchedEffect(key1 = screenModel) {
@@ -94,6 +89,7 @@ class LatestScreen(private val log: Logger) : Tab {
         isLoading: Boolean,
         errorMessage: String?,
         refresh: () -> Unit,
+        onQueryChanged: (String) -> Unit,
     ) {
         val pullRefreshState = rememberPullRefreshState(
             refreshing = isLoading,
@@ -106,7 +102,7 @@ class LatestScreen(private val log: Logger) : Tab {
                 .background(color = MaterialTheme.colors.background)
                 .padding(top = 8.dp),
         ) {
-            SearchField()
+            SearchField(onQueryChanged = onQueryChanged)
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -140,7 +136,10 @@ class LatestScreen(private val log: Logger) : Tab {
     }
 
     @Composable
-    private fun SearchField(modifier: Modifier = Modifier) {
+    private fun SearchField(
+        modifier: Modifier = Modifier,
+        onQueryChanged: (String) -> Unit,
+        ) {
         TextField(
             modifier = modifier
                 .fillMaxWidth()
@@ -148,7 +147,7 @@ class LatestScreen(private val log: Logger) : Tab {
             label = { Text("Search for tokens...") },
             value = String.EMPTY,
             singleLine = true,
-            onValueChange = { },
+            onValueChange = onQueryChanged,
             leadingIcon = {
                 Image(
                     modifier = Modifier.size(24.dp),
@@ -355,6 +354,7 @@ fun LatestScreenPreview() {
             coins = coins,
             true,
             "",
+            {}
         ) { }
     }
 }
