@@ -7,11 +7,16 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.ProxyBuilder
 import io.ktor.client.engine.http
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpSendPipeline
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
@@ -31,6 +36,14 @@ import ru.akella.cryptocoin.data.api.CoinMarketCapApi
 import ru.akella.cryptocoin.data.repositories.CryptoCurrencyRepository
 import ru.akella.cryptocoin.data.repositories.ICryptoCurrencyRepository
 import ru.akella.cryptocoin.domain.AuthHeaders
+import ru.akella.cryptocoin.domain.BadRequestException
+import ru.akella.cryptocoin.domain.ForbiddenException
+import ru.akella.cryptocoin.domain.NotFoundException
+import ru.akella.cryptocoin.domain.ServerException
+import ru.akella.cryptocoin.domain.TooManyRequestsException
+import ru.akella.cryptocoin.domain.UnauthorizedException
+import ru.akella.cryptocoin.domain.createHttpClient
+import ru.akella.cryptocoin.domain.createJson
 import ru.akella.cryptocoin.domain.domainModule
 
 fun initKoin(appModule: Module): KoinApplication {
@@ -72,11 +85,7 @@ private val coreModule = module {
     }
     single { CoinMarketCapApi(get(), get(qualifier = StringQualifier("BaseUrl"))) }
     single<Clock> { Clock.System }
-
-    // platformLogWriter() is a relatively simple config option, useful for local debugging. For production
-    // uses you *may* want to have a more robust configuration from the native platform. In KaMP Kit,
-    // that would likely go into platformModule expect/actual.
-    // See https://github.com/touchlab/Kermit
+    
     val baseLogger =
         Logger(config = StaticConfig(logWriterList = listOf(platformLogWriter())), "CryptoCoin")
     factory { (tag: String?) -> if (tag != null) baseLogger.withTag(tag) else baseLogger }
@@ -89,44 +98,6 @@ private val coreModule = module {
             getWith<Logger>("CryptoCurrencyRepository"),
             get()
         )
-    }
-}
-
-fun createJson() = Json {
-    isLenient = true
-    ignoreUnknownKeys = true
-}
-
-fun createHttpClient(
-    header: AuthHeaders,
-    httpClientEngine: HttpClientEngine,
-    json: Json,
-    log: Logger
-) = HttpClient(httpClientEngine) {
-
-    install(ContentNegotiation) {
-        json(json)
-    }
-
-    install(Logging) {
-        logger = object : io.ktor.client.plugins.logging.Logger {
-            override fun log(message: String) {
-                log.v { message }
-            }
-        }
-
-        level = LogLevel.ALL
-    }
-
-    install(HttpTimeout) {
-        val timeout = 30000L
-        connectTimeoutMillis = timeout
-        requestTimeoutMillis = timeout
-        socketTimeoutMillis = timeout
-    }
-}.apply {
-    sendPipeline.intercept(HttpSendPipeline.State) {
-        context.headers.append(header.name, header.value)
     }
 }
 

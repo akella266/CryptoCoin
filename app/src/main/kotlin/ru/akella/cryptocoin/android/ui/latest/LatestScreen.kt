@@ -42,6 +42,7 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import co.touchlab.kermit.Logger
+import coil.compose.AsyncImagePainter
 import ru.akella.cryptocoin.android.R
 import ru.akella.cryptocoin.android.ui.base.AsyncImage
 import ru.akella.cryptocoin.android.ui.common.EmptyText

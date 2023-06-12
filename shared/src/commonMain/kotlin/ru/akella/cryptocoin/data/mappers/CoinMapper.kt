@@ -8,7 +8,7 @@ internal fun LatestListingsResponse.toCoins(): List<Coin> = buildList {
         add(Coin(
             id = coin.id.toString(),
             categoryId = "",
-            img = "https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.png",
+            img = "https://s2.coinmarketcap.com/static/img/coins/64x64/${coin.id}.0.png",
             name = coin.name,
             currentCost = coin.quote.getOrElse("USD") { coin.quote.values.firstOrNull() }?.price ?: 0.0,
             lastChangePercent = coin.quote.getOrElse("USD") { coin.quote.values.firstOrNull() }?.percentChange24H ?: 0.0,

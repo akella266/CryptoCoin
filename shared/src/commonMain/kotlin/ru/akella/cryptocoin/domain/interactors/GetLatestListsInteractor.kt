@@ -16,12 +16,9 @@ import ru.akella.cryptocoin.domain.models.Coin
 class GetLatestListsInteractor(
     private val dispatchersProvider: DispatchersProvider,
     private val repository: ICryptoCurrencyRepository,
-) {
+)  {
 
-    operator fun invoke(): Flow<Result<List<Coin>>> =
+    operator fun invoke(): Flow<List<Coin>> =
         repository.getLatestCoins()
-            .map { it.asSuccess() }
-            .onStart { emit(Loading()) }
-            .catch { emit(Error(it)) }
             .flowOn(dispatchersProvider.io())
 }
