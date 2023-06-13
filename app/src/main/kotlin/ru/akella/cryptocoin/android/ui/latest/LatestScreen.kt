@@ -42,15 +42,11 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import co.touchlab.kermit.Logger
-import coil.compose.AsyncImagePainter
 import ru.akella.cryptocoin.android.R
+import ru.akella.cryptocoin.android.core.EMPTY
 import ru.akella.cryptocoin.android.ui.base.AsyncImage
 import ru.akella.cryptocoin.android.ui.common.EmptyText
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestState
-import ru.akella.cryptocoin.android.ui.theme.AppTheme
-import ru.akella.cryptocoin.android.ui.theme.Green70
-import ru.akella.cryptocoin.android.ui.theme.Red70
-import ru.akella.cryptocoin.android.util.EMPTY
 import ru.akella.cryptocoin.android.util.formatCap
 import ru.akella.cryptocoin.domain.models.Coin
 import kotlin.math.abs
@@ -244,8 +240,8 @@ class LatestScreen(private val log: Logger) : Tab {
 
         val backgroundColor =
             when {
-                changePercent < 0f -> Red70
-                changePercent > 0f -> Green70
+                changePercent < 0f -> ru.akella.cryptocoin.android.core.theme.Red70
+                changePercent > 0f -> ru.akella.cryptocoin.android.core.theme.Green70
                 else -> Color.LightGray
             }
         Row(
@@ -350,7 +346,7 @@ class LatestScreen(private val log: Logger) : Tab {
 @Preview
 @Composable
 fun LatestScreenPreview() {
-    AppTheme {
+    ru.akella.cryptocoin.android.core.theme.AppTheme {
         LatestScreen(Logger).ScreenContent(
             coins = coins,
             true,

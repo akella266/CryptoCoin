@@ -11,7 +11,6 @@ import co.touchlab.kermit.Logger
 import coil.ImageLoader
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
-import ru.akella.cryptocoin.android.ui.theme.AppTheme
 import ru.akella.cryptocoin.injectLogger
 
 val LocalImageLoader: ProvidableCompositionLocal<ImageLoader?> =
@@ -27,7 +26,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
         setContent {
             CompositionLocalProvider(LocalImageLoader provides imageLoader) {
-                AppTheme {
+                ru.akella.cryptocoin.android.core.theme.AppTheme {
                     Navigator(MainScreen(log))
                 }
             }

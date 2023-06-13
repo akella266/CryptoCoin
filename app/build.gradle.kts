@@ -47,7 +47,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":shared"))
     implementation(libs.bundles.app.ui)
     implementation(libs.multiplatformSettings.common)
     implementation(libs.kotlinx.dateTime)
@@ -56,4 +55,7 @@ dependencies {
     implementation(libs.bundles.mvikotlin)
     implementation(libs.bundles.voyager)
     testImplementation(libs.junit)
+
+    implementation(project(":shared"))
+    implementation(project(":android-core"))
 }

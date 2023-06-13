@@ -44,7 +44,6 @@ class MainApp : Application() {
                         .build()
                 }
 
-                factory { ResourceProvider(get<Context>()) }
             }.apply {
                 includes(latestModule)
             }

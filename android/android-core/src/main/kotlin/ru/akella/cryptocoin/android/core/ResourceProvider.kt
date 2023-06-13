@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android.ui
+package ru.akella.cryptocoin.android.core
 
 import android.content.Context
 import android.graphics.drawable.Drawable

@@ -1,4 +1,3 @@
-
 // https://youtrack.jetbrains.com/issue/KTIJ-19369
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -9,6 +8,7 @@ plugins {
     kotlin("plugin.serialization") version libs.versions.kotlin.get() apply false
     id("com.squareup.sqldelight") version libs.versions.sqlDelight.get() apply false
     id("com.android.library") version libs.versions.android.gradle.plugin.get() apply false
+    alias(libs.plugins.kotlinAndroid) apply false
 }
 
 allprojects {

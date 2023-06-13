@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android.ui.base
+package ru.akella.cryptocoin.android.core.base
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import co.touchlab.kermit.Logger

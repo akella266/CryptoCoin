@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android.ui.theme
+package ru.akella.cryptocoin.android.core.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

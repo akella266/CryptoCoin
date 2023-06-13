@@ -39,6 +39,12 @@ sqlDelight = "1.5.5"
 voyager = "1.0.0-rc04"
 mvikotlin = "3.2.0"
 coil = "2.4.0"
+agp = "7.4.1"
+kotlin180 = "1.8.0"
+androidx-test-ext-junit = "1.1.5"
+espresso-core = "3.5.1"
+appcompat = "1.6.1"
+material = "1.9.0"
 
 [libraries]
 android-desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "android-desugaring" }
@@ -105,11 +111,17 @@ mvikotlin-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-
 
 coil = { module = "io.coil-kt:coil", version.ref = "coil" }
 coilCompose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin180" }
 
 [bundles]
 app-ui = [
