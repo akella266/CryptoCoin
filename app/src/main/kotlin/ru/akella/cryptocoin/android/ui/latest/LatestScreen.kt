@@ -44,7 +44,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import co.touchlab.kermit.Logger
 import ru.akella.cryptocoin.android.R
 import ru.akella.cryptocoin.android.core.EMPTY
-import ru.akella.cryptocoin.android.ui.base.AsyncImage
+import ru.akella.cryptocoin.android.core.custom.AsyncImage
 import ru.akella.cryptocoin.android.ui.common.EmptyText
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestState
 import ru.akella.cryptocoin.android.util.formatCap
@@ -136,7 +136,7 @@ class LatestScreen(private val log: Logger) : Tab {
     private fun SearchField(
         modifier: Modifier = Modifier,
         onQueryChanged: (String) -> Unit,
-        ) {
+    ) {
         TextField(
             modifier = modifier
                 .fillMaxWidth()

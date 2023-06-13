@@ -1,6 +1,8 @@
-package ru.akella.cryptocoin.android.ui.base
+package ru.akella.cryptocoin.android.core.custom
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -8,8 +10,11 @@ import androidx.compose.ui.graphics.DefaultAlpha
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.layout.ContentScale
+import coil.ImageLoader
 import coil.compose.AsyncImagePainter
-import ru.akella.cryptocoin.android.ui.main.LocalImageLoader
+
+val LocalImageLoader: ProvidableCompositionLocal<ImageLoader?> =
+    staticCompositionLocalOf { null }
 
 @Composable
 fun AsyncImage(

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import ru.akella.cryptocoin.DispatchersProvider
 import ru.akella.cryptocoin.android.R
-import ru.akella.cryptocoin.android.ui.base.BaseScreenModel
+import ru.akella.cryptocoin.android.core.base.BaseScreenModel
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestIntent
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestSideEffect
 import ru.akella.cryptocoin.android.ui.latest.mvi.LatestState
