@@ -1,8 +1,7 @@
-package ru.akella.cryptocoin.android.latestlistings.mvi
+package ru.akella.cryptocoin.android.latestlistings.model
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
-import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import kotlin.reflect.KProperty
 
 interface LatestStore : Store<LatestIntent, LatestState, LatestSideEffect>
@@ -17,6 +16,7 @@ interface LatestStoreFactory {
 class LatestStoreFactoryImpl(
     private val storeFactory: StoreFactory,
     private val reducer: LatestReducer,
+    private val executor: LatestExecutor,
 ) : LatestStoreFactory {
 
     override fun create(name: String?, initialState: LatestState): LatestStore =
@@ -25,14 +25,7 @@ class LatestStoreFactoryImpl(
                 autoInit = true,
                 initialState = initialState,
                 bootstrapper = null,
-                executorFactory = { LatestExecutor() },
+                executorFactory = { executor },
                 reducer = reducer,
             ) {}
-}
-
-private class LatestExecutor() : CoroutineExecutor<LatestIntent, LatestIntent, LatestState, LatestIntent, LatestSideEffect>() {
-
-    override fun executeIntent(intent: LatestIntent, getState: () -> LatestState) {
-        dispatch(intent)
-    }
 }

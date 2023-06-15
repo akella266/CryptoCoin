@@ -2,7 +2,7 @@ package ru.akella.cryptocoin.android.latestlistings
 
 import ru.akella.cryptocoin.domain.models.Coin
 
-val coins = listOf(
+val coinsTestData = listOf(
         Coin(
             id = "1",
             categoryId = "2",

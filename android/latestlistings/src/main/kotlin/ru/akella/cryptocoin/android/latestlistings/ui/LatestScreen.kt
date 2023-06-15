@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android.latestlistings
+package ru.akella.cryptocoin.android.latestlistings.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -45,7 +45,12 @@ import co.touchlab.kermit.Logger
 import ru.akella.cryptocoin.android.core.EMPTY
 import ru.akella.cryptocoin.android.core.custom.AsyncImage
 import ru.akella.cryptocoin.android.core.custom.EmptyText
-import ru.akella.cryptocoin.android.latestlistings.mvi.LatestState
+import ru.akella.cryptocoin.android.core.theme.AppTheme
+import ru.akella.cryptocoin.android.latestlistings.R
+import ru.akella.cryptocoin.android.latestlistings.formatCap
+import ru.akella.cryptocoin.android.latestlistings.model.LatestState
+import ru.akella.cryptocoin.android.latestlistings.model.SortField
+import ru.akella.cryptocoin.data.api.SortDirection
 import ru.akella.cryptocoin.domain.models.Coin
 import kotlin.math.abs
 import kotlin.math.round
@@ -65,30 +70,9 @@ class LatestScreen(private val log: Logger) : Tab {
     override fun Content() {
         val screenModel = getScreenModel<LatestScreenModel>()
         val state = screenModel.states.collectAsState(initial = LatestState())
-        ScreenContent(
-            state.value.data,
-            state.value.isLoading,
-            state.value.errorMessage,
-            refresh = screenModel::refresh,
-            onQueryChanged = screenModel::search
-        )
-
-        LaunchedEffect(key1 = screenModel) {
-            screenModel.loadListings()
-        }
-    }
-
-    @Composable
-    fun ScreenContent(
-        coins: List<Coin>?,
-        isLoading: Boolean,
-        errorMessage: String?,
-        refresh: () -> Unit,
-        onQueryChanged: (String) -> Unit,
-    ) {
         val pullRefreshState = rememberPullRefreshState(
-            refreshing = isLoading,
-            onRefresh = refresh,
+            refreshing = state.value.isLoading,
+            onRefresh = screenModel::refresh,
         )
 
         Column(
@@ -97,12 +81,14 @@ class LatestScreen(private val log: Logger) : Tab {
                 .background(color = MaterialTheme.colors.background)
                 .padding(top = 8.dp),
         ) {
-            SearchField(onQueryChanged = onQueryChanged)
+            SearchField(onQueryChanged = screenModel::search)
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .pullRefresh(pullRefreshState)
             ) {
+                val coins = state.value.data
+
                 if (coins.isNullOrEmpty()) {
                     EmptyText()
                 } else {
@@ -111,7 +97,16 @@ class LatestScreen(private val log: Logger) : Tab {
                             .fillMaxSize()
                             .padding(top = 12.dp)
                     ) {
-                        item { Header(Modifier, {}, {}, {}) }
+                        item {
+                            Header(
+                                Modifier,
+                                state.value.sortDirection,
+                                state.value.activeSortField,
+                                screenModel::applyMarketCapSort,
+                                screenModel::applyPriceSort,
+                                screenModel::applyDailyVolumeSort,
+                            )
+                        }
                         items(coins) {
                             CoinItem(
                                 number = coins.indexOf(it) + 1,
@@ -122,11 +117,15 @@ class LatestScreen(private val log: Logger) : Tab {
                 }
 
                 PullRefreshIndicator(
-                    isLoading,
+                    state.value.isLoading,
                     pullRefreshState,
                     Modifier.align(Alignment.TopCenter)
                 )
             }
+        }
+
+        LaunchedEffect(key1 = screenModel) {
+            screenModel.loadListings()
         }
     }
 
@@ -276,6 +275,8 @@ class LatestScreen(private val log: Logger) : Tab {
     @Composable
     fun Header(
         modifier: Modifier = Modifier,
+        sortDirection: SortDirection?,
+        sortField: SortField?,
         onCapSortClicked: () -> Unit,
         onPriceSortClicked: () -> Unit,
         onPerDayChangeSortClicked: () -> Unit,
@@ -291,21 +292,27 @@ class LatestScreen(private val log: Logger) : Tab {
                     .padding(start = 4.dp)
                     .weight(0.6f, true)
                     .clickable(onClick = onCapSortClicked),
-                stringResource(id = R.string.latest_header_market_cap),
+                isActive = sortField == SortField.MARKET_CAP,
+                sortDirection = sortDirection,
+                title = stringResource(id = R.string.latest_header_market_cap),
             )
             HeaderItem(
                 modifier = Modifier
                     .padding(start = 2.dp)
                     .weight(0.4f, true)
                     .clickable(onClick = onPriceSortClicked),
-                stringResource(id = R.string.latest_header_cost)
+                isActive = sortField == SortField.PRICE,
+                sortDirection = sortDirection,
+                title = stringResource(id = R.string.latest_header_cost)
             )
             HeaderItem(
                 modifier = Modifier
                     .padding(start = 12.dp)
                     .weight(0.3f, true)
                     .clickable(onClick = onPerDayChangeSortClicked),
-                stringResource(id = R.string.latest_header_24h)
+                isActive = sortField == SortField.DAILY,
+                sortDirection = sortDirection,
+                title = stringResource(id = R.string.latest_header_24h)
             )
         }
     }
@@ -314,10 +321,14 @@ class LatestScreen(private val log: Logger) : Tab {
     fun HeaderItem(
         modifier: Modifier = Modifier,
         title: String = "",
+        isActive: Boolean = false,
+        sortDirection: SortDirection?,
         hideSort: Boolean = false,
     ) {
-        val rotation = -90f
-        val colorFilter = ColorFilter.tint(Color.Gray)
+        val rotation =
+            if (sortDirection == null || sortDirection == SortDirection.DESC) -90f else 90f
+        val color = if (isActive) Color.Blue else Color.Gray
+        val colorFilter = ColorFilter.tint(color)
         Row(
             modifier = modifier,
             horizontalArrangement = Arrangement.Center,
@@ -344,12 +355,7 @@ class LatestScreen(private val log: Logger) : Tab {
 @Preview
 @Composable
 fun LatestScreenPreview() {
-    ru.akella.cryptocoin.android.core.theme.AppTheme {
-        LatestScreen(Logger).ScreenContent(
-            coins = coins,
-            true,
-            "",
-            {}
-        ) { }
+    AppTheme {
+        LatestScreen(Logger).Content()
     }
 }

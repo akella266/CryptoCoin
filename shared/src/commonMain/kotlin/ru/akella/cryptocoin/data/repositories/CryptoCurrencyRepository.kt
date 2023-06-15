@@ -8,13 +8,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.Clock
 import ru.akella.cryptocoin.DatabaseHelper
 import ru.akella.cryptocoin.data.api.CoinMarketCapApi
+import ru.akella.cryptocoin.data.api.Sort
 import ru.akella.cryptocoin.data.mappers.toCoins
 import ru.akella.cryptocoin.db.Breed
 import ru.akella.cryptocoin.domain.models.Coin
 
 interface ICryptoCurrencyRepository {
 
-    fun getLatestCoins(): Flow<List<Coin>>
+    fun getLatestCoins(sort: Sort? = null): Flow<List<Coin>>
 }
 
 class CryptoCurrencyRepository(
@@ -33,8 +34,8 @@ class CryptoCurrencyRepository(
         ensureNeverFrozen()
     }
 
-    override fun getLatestCoins(): Flow<List<Coin>> = flow {
-        val latestListingsResponse = api.fetchLatestListings(1, 100)
+    override fun getLatestCoins(sort: Sort?): Flow<List<Coin>> = flow {
+        val latestListingsResponse = api.fetchLatestListings(1, 100, sort)
         val coins = latestListingsResponse.toCoins()
         emit(coins)
     }
