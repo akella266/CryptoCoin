@@ -1,9 +1,9 @@
-package ru.akella.cryptocoin.android.ui.latest.mvi
+package ru.akella.cryptocoin.android.latestlistings.mvi
 
 import com.arkivanov.mvikotlin.core.store.Reducer
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestIntent.ShowErrorState
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestIntent.ShowLoadedState
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestIntent.ShowLoadingState
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestIntent.ShowErrorState
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestIntent.ShowLoadedState
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestIntent.ShowLoadingState
 
 class LatestReducer : Reducer<LatestState, LatestIntent> {
 

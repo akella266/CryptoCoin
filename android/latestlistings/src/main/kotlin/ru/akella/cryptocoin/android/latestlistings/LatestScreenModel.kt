@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android.ui.latest
+package ru.akella.cryptocoin.android.latestlistings
 
 import co.touchlab.kermit.Logger
 import com.arkivanov.mvikotlin.core.store.Store
@@ -9,13 +9,12 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import ru.akella.cryptocoin.DispatchersProvider
-import ru.akella.cryptocoin.android.R
 import ru.akella.cryptocoin.android.core.base.BaseScreenModel
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestIntent
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestSideEffect
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestState
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestStoreFactory
-import ru.akella.cryptocoin.android.ui.latest.mvi.getValue
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestIntent
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestSideEffect
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestState
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestStoreFactory
+import ru.akella.cryptocoin.android.latestlistings.mvi.getValue
 import ru.akella.cryptocoin.domain.interactors.GetLatestListsInteractor
 
 class LatestScreenModel(

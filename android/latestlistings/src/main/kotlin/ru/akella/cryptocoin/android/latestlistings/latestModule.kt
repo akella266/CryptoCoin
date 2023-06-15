@@ -1,12 +1,12 @@
-package ru.akella.cryptocoin.android.ui.latest
+package ru.akella.cryptocoin.android.latestlistings
 
 import co.touchlab.kermit.Logger
 import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import org.koin.dsl.module
 import ru.akella.cryptocoin.DispatchersProvider
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestReducer
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestStoreFactory
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestStoreFactoryImpl
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestReducer
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestStoreFactory
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestStoreFactoryImpl
 import ru.akella.cryptocoin.domain.interactors.GetLatestListsInteractor
 import ru.akella.cryptocoin.getWith
 

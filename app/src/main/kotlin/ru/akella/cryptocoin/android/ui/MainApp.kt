@@ -9,7 +9,6 @@ import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import ru.akella.cryptocoin.AppInfo
 import ru.akella.cryptocoin.android.BuildConfig
-import ru.akella.cryptocoin.android.ui.latest.latestModule
 import ru.akella.cryptocoin.domain.AuthHeaders
 import ru.akella.cryptocoin.initKoin
 
@@ -45,7 +44,7 @@ class MainApp : Application() {
                 }
 
             }.apply {
-                includes(latestModule)
+                includes(ru.akella.cryptocoin.android.latestlistings.latestModule)
             }
         )
     }

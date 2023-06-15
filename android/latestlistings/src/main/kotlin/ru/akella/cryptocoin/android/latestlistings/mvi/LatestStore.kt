@@ -1,9 +1,8 @@
-package ru.akella.cryptocoin.android.ui.latest.mvi
+package ru.akella.cryptocoin.android.latestlistings.mvi
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
-import com.arkivanov.mvikotlin.logging.store.LoggingStoreFactory
 import kotlin.reflect.KProperty
 
 interface LatestStore : Store<LatestIntent, LatestState, LatestSideEffect>

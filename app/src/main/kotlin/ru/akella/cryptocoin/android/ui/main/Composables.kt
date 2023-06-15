@@ -9,7 +9,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
@@ -18,7 +17,6 @@ import co.touchlab.kermit.Logger
 import ru.akella.cryptocoin.android.ui.about.AboutScreen
 import ru.akella.cryptocoin.android.ui.categories.CategoriesScreen
 import ru.akella.cryptocoin.android.ui.exchanges.ExchangesScreen
-import ru.akella.cryptocoin.android.ui.latest.LatestScreen
 
 data class MainScreen(
     private val log: Logger,
@@ -33,12 +31,12 @@ data class MainScreen(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreenContent(log: Logger) {
-    TabNavigator(LatestScreen(log)) {
+    TabNavigator(ru.akella.cryptocoin.android.latestlistings.LatestScreen(log)) {
         Scaffold(
             content = { CurrentTab() },
             bottomBar = {
                 BottomNavigation {
-                    TabNavigationItem(LatestScreen(log))
+                    TabNavigationItem(ru.akella.cryptocoin.android.latestlistings.LatestScreen(log))
                     TabNavigationItem(CategoriesScreen)
                     TabNavigationItem(ExchangesScreen)
                     TabNavigationItem(AboutScreen)

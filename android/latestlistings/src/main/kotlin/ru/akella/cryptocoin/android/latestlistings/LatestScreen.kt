@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android.ui.latest
+package ru.akella.cryptocoin.android.latestlistings
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,12 +42,10 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import co.touchlab.kermit.Logger
-import ru.akella.cryptocoin.android.R
 import ru.akella.cryptocoin.android.core.EMPTY
 import ru.akella.cryptocoin.android.core.custom.AsyncImage
-import ru.akella.cryptocoin.android.ui.common.EmptyText
-import ru.akella.cryptocoin.android.ui.latest.mvi.LatestState
-import ru.akella.cryptocoin.android.util.formatCap
+import ru.akella.cryptocoin.android.core.custom.EmptyText
+import ru.akella.cryptocoin.android.latestlistings.mvi.LatestState
 import ru.akella.cryptocoin.domain.models.Coin
 import kotlin.math.abs
 import kotlin.math.round

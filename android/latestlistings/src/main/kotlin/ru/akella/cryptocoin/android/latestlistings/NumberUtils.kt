@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android.util
+package ru.akella.cryptocoin.android.latestlistings
 
 fun formatCap(cap: Double): String {
     return when {

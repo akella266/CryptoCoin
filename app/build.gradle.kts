@@ -58,4 +58,5 @@ dependencies {
 
     implementation(project(":shared"))
     implementation(project(":android-core"))
+    implementation(project(":latestlistings"))
 }

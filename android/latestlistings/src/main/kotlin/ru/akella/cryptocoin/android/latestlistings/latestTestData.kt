@@ -1,4 +1,4 @@
-package ru.akella.cryptocoin.android.ui.latest
+package ru.akella.cryptocoin.android.latestlistings
 
 import ru.akella.cryptocoin.domain.models.Coin
 
