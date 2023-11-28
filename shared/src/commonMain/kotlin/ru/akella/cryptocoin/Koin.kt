@@ -3,45 +3,23 @@ package ru.akella.cryptocoin
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.StaticConfig
 import co.touchlab.kermit.platformLogWriter
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.engine.ProxyBuilder
-import io.ktor.client.engine.http
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.plugins.HttpResponseValidator
-import io.ktor.client.plugins.HttpTimeout
-import io.ktor.client.plugins.ServerResponseException
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.request.HttpSendPipeline
-import io.ktor.client.statement.bodyAsText
-import io.ktor.http.HttpStatusCode
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.Clock
-import kotlinx.serialization.json.Json
 import org.koin.core.KoinApplication
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.parameter.parametersOf
-import org.koin.core.qualifier.Qualifier
 import org.koin.core.qualifier.StringQualifier
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
 import ru.akella.cryptocoin.data.api.BASE_URL
 import ru.akella.cryptocoin.data.api.CoinMarketCapApi
+import ru.akella.cryptocoin.data.db.dbModule
 import ru.akella.cryptocoin.data.repositories.CryptoCurrencyRepository
 import ru.akella.cryptocoin.data.repositories.ICryptoCurrencyRepository
 import ru.akella.cryptocoin.domain.AuthHeaders
-import ru.akella.cryptocoin.domain.BadRequestException
-import ru.akella.cryptocoin.domain.ForbiddenException
-import ru.akella.cryptocoin.domain.NotFoundException
-import ru.akella.cryptocoin.domain.ServerException
-import ru.akella.cryptocoin.domain.TooManyRequestsException
-import ru.akella.cryptocoin.domain.UnauthorizedException
 import ru.akella.cryptocoin.domain.createHttpClient
 import ru.akella.cryptocoin.domain.createJson
 import ru.akella.cryptocoin.domain.domainModule
@@ -52,7 +30,8 @@ fun initKoin(appModule: Module): KoinApplication {
             appModule,
             platformModule,
             coreModule,
-            domainModule
+            domainModule,
+            dbModule,
         )
     }
 
@@ -100,6 +79,8 @@ private val coreModule = module {
         )
     }
 }
+
+
 
 inline fun <reified T> Scope.getWith(vararg params: Any?): T {
     return get(parameters = { parametersOf(*params) })

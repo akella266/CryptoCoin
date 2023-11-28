@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.8.0"
+kotlin = "1.9.0"
 
 ## SDK Versions
 minSdk = "24"
@@ -7,12 +7,12 @@ targetSdk = "33"
 compileSdk = "33"
 
 # Dependencies
-android-gradle-plugin = "7.4.1"
+android-gradle-plugin = "7.4.2"
 ktlint-gradle = "11.2.0"
 gradle-versions = "0.42.0"
 
-compose = "1.4.0-alpha03"
-composeCompiler = "1.4.0-dev-k1.8.0-33c0ad36f83"
+compose = "1.5.4"
+composeCompiler = "1.5.0"
 
 android-desugaring = "1.1.8" # Don't bump to 1.2.x until AGP is 7.3.x
 androidx-core = "1.9.0"
@@ -39,8 +39,7 @@ sqlDelight = "1.5.5"
 voyager = "1.0.0-rc04"
 mvikotlin = "3.2.0"
 coil = "2.4.0"
-agp = "7.4.1"
-kotlin180 = "1.8.0"
+agp = "7.4.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
 appcompat = "1.6.1"
@@ -121,7 +120,7 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
 gradleVersions = { id = "com.github.ben-manes.versions", version.ref = "gradle-versions" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin180" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 [bundles]
 app-ui = [
@@ -167,4 +166,3 @@ voyager = [
     "voyager-tabNavigator",
     "voyager-transitions",
 ]
-

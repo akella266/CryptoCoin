@@ -1,0 +1,23 @@
+CREATE TABLE Coins(
+    id TEXT NOT NULL PRIMARY KEY,
+    categoryId TEXT NOT NULL,
+    img TEXT,
+    name TEXT NOT NULL,
+    currentCost REAL NOT NULL,
+    lastChangePercent REAL NOT NULL,
+    cap REAL NOT NULL,
+    description TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM Coins;
+
+selectById:
+SELECT * FROM Coins WHERE id = ?;
+
+insert:
+INSERT OR IGNORE INTO Coins(id, categoryId, img, name, currentCost, lastChangePercent, cap, description)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteAll:
+DELETE FROM Coins;

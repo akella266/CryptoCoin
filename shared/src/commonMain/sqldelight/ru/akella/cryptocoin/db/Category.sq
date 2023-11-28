@@ -1,0 +1,19 @@
+CREATE TABLE Categories(
+    id TEXT NOT NULL PRIMARY KEY,
+    description TEXT NOT NULL,
+    tradingVolume REAL NOT NULL,
+    cap REAL NOT NULL
+);
+
+selectAll:
+SELECT * FROM Categories;
+
+selectById:
+SELECT * FROM Categories WHERE id = ?;
+
+insert:
+INSERT OR IGNORE INTO Categories(id, description, tradingVolume, cap)
+VALUES (?, ?, ?, ?);
+
+deleteAll:
+DELETE FROM Categories;
