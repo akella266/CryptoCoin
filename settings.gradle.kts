@@ -10,8 +10,6 @@ pluginManagement {
 include(":app", ":shared")
 rootProject.name = "CryptoCoin"
 
-enableFeaturePreview("VERSION_CATALOGS")
-
 include(":android-core")
 project(":android-core").projectDir = File("android/android-core")
 
