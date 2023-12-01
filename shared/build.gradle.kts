@@ -29,7 +29,7 @@ android {
 version = "1.2"
 
 kotlin {
-    android()
+    androidTarget()
     ios()
     // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
     iosSimulatorArm64()

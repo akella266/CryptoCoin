@@ -15,7 +15,7 @@ import ru.akella.cryptocoin.domain.models.Coin
 
 interface ICryptoCurrencyRepository {
 
-    fun getLatestCoins(sort: Sort? = null): Flow<List<Coin>>
+    fun getLatestCoins(forceUpdate: Boolean = false, sort: Sort? = null): Flow<List<Coin>>
 }
 
 class CryptoCurrencyRepository(
@@ -34,7 +34,7 @@ class CryptoCurrencyRepository(
         ensureNeverFrozen()
     }
 
-    override fun getLatestCoins(sort: Sort?): Flow<List<Coin>> = flow {
+    override fun getLatestCoins(forceUpdate: Boolean, sort: Sort?): Flow<List<Coin>> = flow {
         val latestListingsResponse = api.fetchLatestListings(1, 100, sort)
         val coins = latestListingsResponse.toCoins()
         emit(coins)
@@ -42,11 +42,6 @@ class CryptoCurrencyRepository(
 
     fun getBreeds(): Flow<List<Breed>> = dbHelper.selectAllItems()
 
-    suspend fun refreshBreedsIfStale() {
-        if (isBreedListStale()) {
-            refreshBreeds()
-        }
-    }
 
     suspend fun refreshBreeds() {
         // val breedResult = dogApi.getJsonFromApi()
@@ -58,20 +53,6 @@ class CryptoCurrencyRepository(
         // if (breedList.isNotEmpty()) {
         //     dbHelper.insertBreeds(breedList)
         // }
-    }
-
-    suspend fun updateBreedFavorite(breed: Breed) {
-        dbHelper.updateFavorite(breed.id, !breed.favorite)
-    }
-
-    private fun isBreedListStale(): Boolean {
-        val lastDownloadTimeMS = settings.getLong(DB_TIMESTAMP_KEY, 0)
-        val oneHourMS = 60 * 60 * 1000
-        val stale = lastDownloadTimeMS + oneHourMS < clock.now().toEpochMilliseconds()
-        if (!stale) {
-            log.i { "Breeds not fetched from network. Recently updated" }
-        }
-        return stale
     }
 
 }

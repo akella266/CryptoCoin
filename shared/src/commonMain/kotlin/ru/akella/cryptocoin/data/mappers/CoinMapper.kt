@@ -1,5 +1,6 @@
 package ru.akella.cryptocoin.data.mappers
 
+import ru.akella.cryptocoin.data.db.models.CoinDbModel
 import ru.akella.cryptocoin.data.response.latestlisting.LatestListingsResponse
 import ru.akella.cryptocoin.domain.models.Coin
 
@@ -16,4 +17,30 @@ internal fun LatestListingsResponse.toCoins(): List<Coin> = buildList {
             description = "",
         ))
     }
+}
+
+internal fun List<CoinDbModel>.toCoins(): List<Coin> = map {
+    Coin(
+        id = it.id,
+        categoryId = it.categoryId,
+        img = it.img,
+        name = it.name,
+        currentCost = it.currentCost,
+        lastChangePercent = it.lastChangePercent,
+        cap = it.cap,
+        description = it.description,
+    )
+}
+
+internal fun List<Coin>.toCoinDbModels(): List<CoinDbModel> = map {
+    CoinDbModel(
+        id = it.id,
+        categoryId = it.categoryId,
+        img = it.img,
+        name = it.name,
+        currentCost = it.currentCost,
+        lastChangePercent = it.lastChangePercent,
+        cap = it.cap,
+        description = it.description,
+    )
 }
