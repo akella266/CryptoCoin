@@ -8,7 +8,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import ru.akella.cryptocoin.android.R
+import ru.akella.cryptocoin.android.core.R
 
 object AboutScreen : Tab {
 

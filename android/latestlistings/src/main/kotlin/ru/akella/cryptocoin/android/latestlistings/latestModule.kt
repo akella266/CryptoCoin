@@ -19,7 +19,6 @@ val latestModule = module {
             getWith<Logger>("LatestScreenModel"),
             get<LatestStoreFactory>(),
             get<DispatchersProvider>(),
-            get<GetLatestListsInteractor>(),
             get<ResourceProvider>(),
         )
     }

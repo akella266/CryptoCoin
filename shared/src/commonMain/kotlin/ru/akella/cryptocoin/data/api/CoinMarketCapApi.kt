@@ -1,6 +1,5 @@
 package ru.akella.cryptocoin.data.api
 
-import co.touchlab.stately.ensureNeverFrozen
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -16,10 +15,6 @@ class CoinMarketCapApi(
     private val client: HttpClient,
     private val baseUrl: String
 ): KoinComponent {
-
-    init {
-        ensureNeverFrozen()
-    }
 
     suspend fun fetchLatestListings(
         start: Int,

@@ -46,6 +46,7 @@ import ru.akella.cryptocoin.android.core.EMPTY
 import ru.akella.cryptocoin.android.core.custom.AsyncImage
 import ru.akella.cryptocoin.android.core.custom.EmptyText
 import ru.akella.cryptocoin.android.core.theme.AppTheme
+import ru.akella.cryptocoin.android.core.R as CoreR
 import ru.akella.cryptocoin.android.latestlistings.R
 import ru.akella.cryptocoin.android.latestlistings.formatCap
 import ru.akella.cryptocoin.android.latestlistings.model.LatestState
@@ -62,8 +63,8 @@ class LatestScreen(private val log: Logger) : Tab {
         @Composable
         get() = TabOptions(
             index = 1u,
-            title = stringResource(id = R.string.main_bottom_tab_latest),
-            icon = painterResource(id = R.drawable.ic_latest)
+            title = stringResource(id = CoreR.string.main_bottom_tab_latest),
+            icon = painterResource(id = CoreR.drawable.ic_latest)
         )
 
     @Composable
@@ -145,7 +146,7 @@ class LatestScreen(private val log: Logger) : Tab {
             leadingIcon = {
                 Image(
                     modifier = Modifier.size(24.dp),
-                    painter = painterResource(id = R.drawable.ic_search_24),
+                    painter = painterResource(id = CoreR.drawable.ic_search_24),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(Color.Gray)
                 )
@@ -256,7 +257,7 @@ class LatestScreen(private val log: Logger) : Tab {
                     modifier = Modifier
                         .size(16.dp)
                         .rotate(rotation),
-                    painter = painterResource(id = R.drawable.ic_arrow_16),
+                    painter = painterResource(id = CoreR.drawable.ic_arrow_16),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(color = color),
                 )
@@ -343,7 +344,7 @@ class LatestScreen(private val log: Logger) : Tab {
                 Image(
                     modifier = Modifier
                         .rotate(rotation),
-                    painter = painterResource(id = R.drawable.ic_arrow_16),
+                    painter = painterResource(id = CoreR.drawable.ic_arrow_16),
                     contentDescription = null,
                     colorFilter = colorFilter,
                 )

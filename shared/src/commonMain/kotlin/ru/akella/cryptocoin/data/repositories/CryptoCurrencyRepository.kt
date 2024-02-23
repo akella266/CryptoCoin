@@ -1,7 +1,6 @@
 package ru.akella.cryptocoin.data.repositories
 
 import co.touchlab.kermit.Logger
-import co.touchlab.stately.ensureNeverFrozen
 import com.russhwolf.settings.Settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -28,10 +27,6 @@ class CryptoCurrencyRepository(
 
     companion object {
         internal const val DB_TIMESTAMP_KEY = "DbTimestampKey"
-    }
-
-    init {
-        ensureNeverFrozen()
     }
 
     override fun getLatestCoins(forceUpdate: Boolean, sort: Sort?): Flow<List<Coin>> = flow {

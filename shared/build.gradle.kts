@@ -24,12 +24,23 @@ android {
         abortOnError = true
     }
     namespace = "ru.akella.cryptocoin"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
 
 version = "1.2"
 
 kotlin {
-    androidTarget()
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "17"
+            }
+        }
+    }
     ios()
     // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
     iosSimulatorArm64()
@@ -53,7 +64,6 @@ kotlin {
                 implementation(libs.kotlinx.dateTime)
                 implementation(libs.bundles.mvikotlin)
                 api(libs.touchlab.kermit)
-                api(libs.touchlab.stately)
             }
         }
         val commonTest by getting {
@@ -88,10 +98,10 @@ kotlin {
         }
     }
 
-    sourceSets.matching { it.name.endsWith("Test") }
-        .configureEach {
-            languageSettings.optIn("kotlin.time.ExperimentalTime")
-        }
+    // sourceSets.matching { it.name.endsWith("Test") }
+    //     .configureEach {
+    //         languageSettings.optIn("kotlin.time.ExperimentalTime")
+    //     }
 
     cocoapods {
         framework {
@@ -108,3 +118,5 @@ sqldelight {
         packageName = "ru.akella.cryptocoin.db"
     }
 }
+
+task("testClasses")

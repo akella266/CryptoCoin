@@ -9,12 +9,7 @@ import ru.akella.cryptocoin.data.db.accessors.CoinLocalDataSource
 import ru.akella.cryptocoin.data.mappers.toCoinDbModels
 import ru.akella.cryptocoin.data.mappers.toCoins
 import ru.akella.cryptocoin.domain.models.Coin
-
-interface ICoinsRepository {
-
-    fun getLatestCoins(forceUpdate: Boolean = false, sort: Sort? = null): Flow<List<Coin>>
-
-}
+import ru.akella.cryptocoin.domain.repositories.ICoinsRepository
 
 internal class CoinsRepository(
     private val coinDb: CoinLocalDataSource,
@@ -28,8 +23,13 @@ internal class CoinsRepository(
             emit(it.toCoins())
         }
 
-        if (localData == null || forceUpdate) {
+        if (localData.isNullOrEmpty() || forceUpdate) {
             val latestListingsResponse = api.fetchLatestListings(1, 100, sort)
+
+            if (forceUpdate) {
+                coinDb.deleteAll()
+            }
+
             val coins = latestListingsResponse.toCoins()
             emit(coins)
             coins.toCoinDbModels().forEach {

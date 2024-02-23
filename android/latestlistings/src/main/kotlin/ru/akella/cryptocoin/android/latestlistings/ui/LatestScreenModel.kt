@@ -4,11 +4,12 @@ import co.touchlab.kermit.Logger
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import com.arkivanov.mvikotlin.extensions.coroutines.states
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import ru.akella.cryptocoin.DispatchersProvider
 import ru.akella.cryptocoin.android.core.ResourceProvider
 import ru.akella.cryptocoin.android.core.base.BaseScreenModel
-import ru.akella.cryptocoin.android.latestlistings.R
+import ru.akella.cryptocoin.android.core.R as CoreR
 import ru.akella.cryptocoin.android.latestlistings.model.LatestIntent
 import ru.akella.cryptocoin.android.latestlistings.model.LatestSideEffect
 import ru.akella.cryptocoin.android.latestlistings.model.LatestState
@@ -16,13 +17,12 @@ import ru.akella.cryptocoin.android.latestlistings.model.LatestStoreFactory
 import ru.akella.cryptocoin.android.latestlistings.model.SortField
 import ru.akella.cryptocoin.android.latestlistings.model.getValue
 import ru.akella.cryptocoin.data.api.Sort
-import ru.akella.cryptocoin.domain.interactors.GetLatestListsInteractor
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class LatestScreenModel(
     log: Logger,
     storeFactory: LatestStoreFactory,
     dispatchersProvider: DispatchersProvider,
-    private val getLatestListingsInteractor: GetLatestListsInteractor,
     private val resourceProvider: ResourceProvider,
 ) : BaseScreenModel<LatestIntent, LatestState, LatestSideEffect>(log, dispatchersProvider) {
 
@@ -68,7 +68,7 @@ class LatestScreenModel(
         }
         store.accept(
             LatestIntent.ShowErrorState(
-                resourceProvider.getString(R.string.common_error_text),
+                resourceProvider.getString(CoreR.string.common_error_text),
                 sort
             )
         )

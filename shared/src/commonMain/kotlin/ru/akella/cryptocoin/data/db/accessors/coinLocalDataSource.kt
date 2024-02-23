@@ -6,6 +6,7 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import com.squareup.sqldelight.runtime.coroutines.mapToOne
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import ru.akella.cryptocoin.DispatchersProvider
 import ru.akella.cryptocoin.data.db.mappers.toDbModel
 import ru.akella.cryptocoin.data.db.models.CoinDbModel
 import ru.akella.cryptocoin.data.db.transactionWithContext
@@ -24,13 +25,13 @@ interface ICoinLocalDataSource {
 
 internal class CoinLocalDataSource(
     sqlDriver: SqlDriver,
-    private val backgroundDispatcher: CoroutineDispatcher,
+    private val backgroundDispatcher: DispatchersProvider,
 ) : ICoinLocalDataSource {
 
     private val db: CryptoCoin = CryptoCoin(sqlDriver)
 
     override suspend fun put(categoryId: String, coin: CoinDbModel) {
-        db.transactionWithContext(backgroundDispatcher) {
+        db.transactionWithContext(backgroundDispatcher.io()) {
             with(coin) {
                 db.coinQueries.insert(
                     id = id,
@@ -49,12 +50,12 @@ internal class CoinLocalDataSource(
     override fun get(id: String): Flow<CoinDbModel> =
         db.coinQueries.selectById(id, ::toDbModel)
             .asFlow()
-            .mapToOne(backgroundDispatcher)
+            .mapToOne(backgroundDispatcher.io())
 
     override fun getAll(): Flow<List<CoinDbModel>> =
         db.coinQueries.selectAll(::toDbModel)
             .asFlow()
-            .mapToList(backgroundDispatcher)
+            .mapToList(backgroundDispatcher.io())
 
     override suspend fun deleteAll() {
         db.coinQueries.deleteAll()
