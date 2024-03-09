@@ -14,7 +14,7 @@ import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import co.touchlab.kermit.Logger
-import ru.akella.cryptocoin.android.latestlistings.ui.LatestScreen
+import ru.akella.cryptocoin.android.latestlistings.ui.LatestTab
 import ru.akella.cryptocoin.android.ui.about.AboutScreen
 import ru.akella.cryptocoin.android.ui.categories.CategoriesScreen
 import ru.akella.cryptocoin.android.ui.exchanges.ExchangesScreen
@@ -32,12 +32,12 @@ data class MainScreen(
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreenContent(log: Logger) {
-    TabNavigator(LatestScreen(log)) {
+    TabNavigator(LatestTab(log)) {
         Scaffold(
             content = { CurrentTab() },
             bottomBar = {
                 BottomNavigation {
-                    TabNavigationItem(LatestScreen(log))
+                    TabNavigationItem(LatestTab(log))
                     TabNavigationItem(CategoriesScreen)
                     TabNavigationItem(ExchangesScreen)
                     TabNavigationItem(AboutScreen)

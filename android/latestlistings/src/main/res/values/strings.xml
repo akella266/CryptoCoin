@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="latest_lists_title">Market Cap</string>
-    <string name="latest_header_market_cap">Market Cap</string>
+    <string name="latest_header_market_cap">Coin</string>
     <string name="latest_header_cost">Price, USD</string>
     <string name="latest_header_24h">24h %</string>
     <string name="latest_listing_changed_percent">%s %</string>

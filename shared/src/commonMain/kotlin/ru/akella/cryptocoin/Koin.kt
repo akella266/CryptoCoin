@@ -17,8 +17,6 @@ import org.koin.dsl.module
 import ru.akella.cryptocoin.data.api.BASE_URL
 import ru.akella.cryptocoin.data.api.CoinMarketCapApi
 import ru.akella.cryptocoin.data.db.dbModule
-import ru.akella.cryptocoin.data.repositories.CryptoCurrencyRepository
-import ru.akella.cryptocoin.data.repositories.ICryptoCurrencyRepository
 import ru.akella.cryptocoin.domain.AuthHeaders
 import ru.akella.cryptocoin.domain.createHttpClient
 import ru.akella.cryptocoin.domain.createJson
@@ -68,16 +66,6 @@ private val coreModule = module {
     val baseLogger =
         Logger(config = StaticConfig(logWriterList = listOf(platformLogWriter())), "CryptoCoin")
     factory { (tag: String?) -> if (tag != null) baseLogger.withTag(tag) else baseLogger }
-
-    factory<ICryptoCurrencyRepository> {
-        CryptoCurrencyRepository(
-            get(),
-            get(),
-            get(),
-            getWith<Logger>("CryptoCurrencyRepository"),
-            get()
-        )
-    }
 }
 
 
