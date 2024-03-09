@@ -29,7 +29,7 @@ fun createHttpClient(
     expectSuccess = true
 
     HttpResponseValidator {
-        handleResponseExceptionWithRequest { exception, request ->
+        handleResponseExceptionWithRequest { exception, _ ->
             when (exception) {
                 is ServerResponseException -> throw ServerResponseException(exception.response, "Server Exception")
                 is ClientRequestException -> {

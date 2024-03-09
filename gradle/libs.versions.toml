@@ -32,6 +32,7 @@ kermit = "1.2.2"
 stately = "1.2.3"
 
 accompanist-swiperefresh = "0.25.1"
+accompanist-drawablepainter = "0.35.0-alpha"
 koin = "3.2.0"
 multiplatformSettings = "1.0.0-alpha01"
 turbine = "0.12.1"
@@ -55,6 +56,7 @@ androidx-test-junit = { module = "androidx.test.ext:junit-ktx", version.ref = "a
 compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "composeCompiler" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview-android", version.ref = "compose" }
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
@@ -63,6 +65,7 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 google-accompanist-swipeRefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist-swiperefresh" }
+google-accompanist-drawablepainter = { module = "com.google.accompanist:accompanist-drawablepainter", version.ref = "accompanist-drawablepainter" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 
@@ -129,10 +132,12 @@ app-ui = [
     "androidx-lifecycle-viewmodel",
     "compose-ui",
     "compose-tooling",
+    "compose-tooling-preview",
     "compose-foundation",
     "compose-material",
     "compose-activity",
     "google-accompanist-swipeRefresh",
+    "google-accompanist-drawablepainter",
     "coil",
     "coilCompose",
 ]
