@@ -114,6 +114,7 @@ fun LatestContent(
                 }
             }
 
+            // todo need to migrate to material3 to avoid keyFrame crash
             // PullRefreshIndicator(
             //     state.isLoading,
             //     pullRefreshState,
@@ -190,7 +191,7 @@ fun CoinItem(
         ) {
             Text(
                 text = coin.name,
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 color = Color.White,
             )
             Text(
@@ -211,7 +212,7 @@ fun CoinItem(
         )
         PriceChange(
             modifier = Modifier
-                .padding(horizontal = 16.dp),
+                .padding(start = 16.dp, end = 12.dp),
             changePercent = coin.lastChangePercent
         )
     }
@@ -288,7 +289,6 @@ fun Header(
             modifier = Modifier
                 .padding(start = 32.dp, end = 12.dp)
                 .weight(0.4f, true)
-                .background(Color.Red)
                 .clickable(onClick = onCapSortClicked),
             isActive = sortField == SortField.MARKET_CAP,
             sortDirection = sortDirection,
@@ -299,7 +299,6 @@ fun Header(
             modifier = Modifier
                 .padding(start = 2.dp)
                 .weight(0.3f, true)
-                .background(Color.Green)
                 .clickable(onClick = onPriceSortClicked),
             isActive = sortField == SortField.PRICE,
             sortDirection = sortDirection,
@@ -310,7 +309,6 @@ fun Header(
             modifier = Modifier
                 .padding(start = 12.dp, end = 12.dp)
                 .weight(0.2f, true)
-                .background(Color.Blue)
                 .clickable(onClick = onPerDayChangeSortClicked),
             isActive = sortField == SortField.DAILY,
             sortDirection = sortDirection,

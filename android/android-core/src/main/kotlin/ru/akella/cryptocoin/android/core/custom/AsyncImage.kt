@@ -25,6 +25,7 @@ fun AsyncImage(
     model: Any?,
     contentDescription: String?,
     modifier: Modifier = Modifier,
+    @DrawableRes placeholder: Int? = null,
     @DrawableRes error: Int? = null,
     alignment: Alignment = Alignment.Center,
     contentScale: ContentScale = ContentScale.Fit,
@@ -34,13 +35,17 @@ fun AsyncImage(
 ) {
     val imageLoader = LocalImageLoader.current
     val context = LocalContext.current
-    val drawable = error?.let { remember(error) { ResourcesCompat.getDrawable(context.resources, error, context.theme) } }
-    val errorPainter = rememberDrawablePainter(drawable = drawable)
 
+    val errorDrawable = error?.let { remember(error) { ResourcesCompat.getDrawable(context.resources, error, context.theme) } }
+    val errorPainter = rememberDrawablePainter(drawable = errorDrawable)
+
+    val placeholderDrawable = placeholder?.let { remember(placeholder) { ResourcesCompat.getDrawable(context.resources, placeholder, context.theme) } }
+    val placeholderPainter = rememberDrawablePainter(drawable = placeholderDrawable)
 
     if (imageLoader != null) {
         val updatedImageLoader = imageLoader.newBuilder()
-            .error(drawable = drawable)
+            .error(drawable = errorDrawable)
+            .placeholder(drawable = placeholderDrawable)
             .build()
         coil.compose.AsyncImage(
             model = model,
@@ -59,6 +64,7 @@ fun AsyncImage(
             contentDescription = contentDescription,
             modifier = modifier,
             error = errorPainter,
+            placeholder = placeholderPainter,
             alignment = alignment,
             contentScale = contentScale,
             alpha = alpha,
