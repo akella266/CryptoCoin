@@ -52,7 +52,7 @@ class LatestScreenModel(
     }
 
     fun applyDailyVolumeSort() {
-        applySort(SortField.DAILY)
+        applySort(SortField.VOLUME_24H)
     }
 
     private fun applySort(sortField: SortField) {

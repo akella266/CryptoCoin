@@ -59,6 +59,7 @@ fun createHttpClient(
         }
 
         level = LogLevel.ALL
+        this.filter { true }
     }
 
     install(HttpTimeout) {

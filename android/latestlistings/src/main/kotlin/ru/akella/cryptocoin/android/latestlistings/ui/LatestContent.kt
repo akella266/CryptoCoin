@@ -21,7 +21,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
@@ -30,9 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,7 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.res.ResourcesCompat
 import ru.akella.cryptocoin.android.core.EMPTY
 import ru.akella.cryptocoin.android.core.R as CoreR
 import ru.akella.cryptocoin.android.core.custom.AsyncImage
@@ -310,7 +305,7 @@ fun Header(
                 .padding(start = 12.dp, end = 12.dp)
                 .weight(0.2f, true)
                 .clickable(onClick = onPerDayChangeSortClicked),
-            isActive = sortField == SortField.DAILY,
+            isActive = sortField == SortField.VOLUME_24H,
             sortDirection = sortDirection,
             title = stringResource(id = R.string.latest_header_24h),
             arrangement = Arrangement.End,
@@ -327,7 +322,7 @@ fun HeaderItem(
     sortDirection: SortDirection?,
 ) {
     val rotation =
-        if (sortDirection == null || sortDirection == SortDirection.DESC) -90f else 90f
+        if (sortDirection == null || sortDirection == SortDirection.DESC) 90f else -90f
     val color = if (isActive) Color.Blue else Color.Gray
     val colorFilter = ColorFilter.tint(color)
     Row(
@@ -340,7 +335,7 @@ fun HeaderItem(
             color = Color.White,
             fontSize = 14.sp,
         )
-        if (sortDirection != null) {
+        if (sortDirection != null && isActive) {
             Image(
                 modifier = Modifier
                     .rotate(rotation),

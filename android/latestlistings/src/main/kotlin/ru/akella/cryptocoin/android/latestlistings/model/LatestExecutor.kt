@@ -24,8 +24,8 @@ class LatestExecutor(
         }
     }
 
-    private fun load(sort: Sort? = null) {
-        getLatestListingsInteractor(sort)
+    private fun load(force: Boolean = false, sort: Sort? = null) {
+        getLatestListingsInteractor(force, sort)
             .flowOn(dispatchersProvider.io())
             .onStart { dispatch(LatestIntent.ShowLoadingState(null, sort)) }
             .onEach { data ->
@@ -42,7 +42,11 @@ class LatestExecutor(
                 null
             }
         }
-        load(currentSort)
+
+        load(
+            force = true,
+            sort = currentSort
+        )
     }
 
     private fun updateSort(sortField: SortField, getState: () -> LatestState) {
@@ -53,7 +57,7 @@ class LatestExecutor(
                 val direction = when (currentState.sortDirection) {
                     SortDirection.ASC -> SortDirection.DESC
                     SortDirection.DESC -> SortDirection.ASC
-                    else -> SortDirection.ASC
+                    else -> SortDirection.DESC
                 }
                 Sort(direction = direction, field = sortField.value)
             }
@@ -61,6 +65,9 @@ class LatestExecutor(
                 Sort(direction = SortDirection.ASC, field = sortField.value)
             }
         }
-        load(sort)
+        load(
+            force = true,
+            sort = sort
+        )
     }
 }
