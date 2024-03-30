@@ -8,6 +8,6 @@ import ru.akella.cryptocoin.domain.interactors.GetLatestListsInteractor
 import ru.akella.cryptocoin.domain.repositories.ICoinsRepository
 
 val domainModule = module {
-    factory { GetLatestListsInteractor(get(), get()) }
+    factory { GetLatestListsInteractor(get()) }
     factory<ICoinsRepository> { CoinsRepository(get<CoinLocalDataSource>(), get<CoinMarketCapApi>()) }
 }

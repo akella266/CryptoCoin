@@ -8,11 +8,12 @@ import ru.akella.cryptocoin.domain.models.Coin
 import ru.akella.cryptocoin.domain.repositories.ICoinsRepository
 
 class GetLatestListsInteractor(
-    private val dispatchersProvider: DispatchersProvider,
     private val repository: ICoinsRepository,
 )  {
 
-    operator fun invoke(sort: Sort? = null): Flow<List<Coin>> =
-        repository.getLatestCoins(sort = sort)
-            .flowOn(dispatchersProvider.io())
+    operator fun invoke(
+        force: Boolean,
+        sort: Sort? = null
+    ): Flow<List<Coin>> =
+        repository.getLatestCoins(forceUpdate = force, sort = sort)
 }

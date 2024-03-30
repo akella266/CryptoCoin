@@ -18,9 +18,10 @@ internal class CoinsRepository(
 
     override fun getLatestCoins(forceUpdate: Boolean, sort: Sort?): Flow<List<Coin>> = flow {
         val localData = coinDb.getAll().firstOrNull()
-
-        localData?.let {
-            emit(it.toCoins())
+        if (sort == null) {
+            localData?.let {
+                emit(it.toCoins())
+            }
         }
 
         if (localData.isNullOrEmpty() || forceUpdate) {

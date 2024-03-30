@@ -10,6 +10,7 @@ import coil.ImageLoader
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import ru.akella.cryptocoin.android.core.custom.LocalImageLoader
+import ru.akella.cryptocoin.android.core.theme.AppTheme
 import ru.akella.cryptocoin.injectLogger
 
 class MainActivity : ComponentActivity(), KoinComponent {
@@ -22,7 +23,7 @@ class MainActivity : ComponentActivity(), KoinComponent {
         super.onCreate(savedInstanceState)
         setContent {
             CompositionLocalProvider(LocalImageLoader provides imageLoader) {
-                ru.akella.cryptocoin.android.core.theme.AppTheme {
+                AppTheme {
                     Navigator(MainScreen(log))
                 }
             }

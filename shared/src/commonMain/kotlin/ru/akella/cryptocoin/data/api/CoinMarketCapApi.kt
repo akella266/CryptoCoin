@@ -22,7 +22,7 @@ class CoinMarketCapApi(
         sort: Sort? = null,
     ): LatestListingsResponse {
         val sortDirectionParam  = sort?.let {
-            "&sort=${it.field}&sort_dir=${it.direction}"
+            "&sort=${it.field}&sort_dir=${it.direction.name.lowercase()}"
         } ?: ""
 
         return client.get("$baseUrl/v1/cryptocurrency/listings/latest?start=$start&limit=$limit$sortDirectionParam")

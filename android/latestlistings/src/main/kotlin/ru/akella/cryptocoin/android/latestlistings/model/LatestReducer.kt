@@ -13,20 +13,20 @@ class LatestReducer : Reducer<LatestState, LatestIntent> {
                 data = msg.data,
                 isLoading = true,
                 errorMessage = null,
-                activeSortField = msg.sort?.field?.let { SortField.valueOf(it) },
+                activeSortField = msg.sort?.field?.let { SortField.valueOf(it.uppercase()) },
                 sortDirection = msg.sort?.direction
             )
             is ShowLoadedState -> copy(
                 data = msg.data,
                 isLoading = false,
                 errorMessage = null,
-                activeSortField = msg.sort?.field?.let { SortField.valueOf(it) },
+                activeSortField = msg.sort?.field?.let { SortField.valueOf(it.uppercase()) },
                 sortDirection = msg.sort?.direction
             )
             is ShowErrorState -> copy(
                 isLoading = false,
                 errorMessage = msg.errorMessage,
-                activeSortField = msg.sort?.field?.let { SortField.valueOf(it) },
+                activeSortField = msg.sort?.field?.let { SortField.valueOf(it.uppercase()) },
                 sortDirection = msg.sort?.direction
             )
             else -> this
